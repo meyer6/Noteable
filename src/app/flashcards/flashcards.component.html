@@ -1,0 +1,79 @@
+<div class="centre fill container">
+    <div *ngFor="let flashcard of flashcardsService.flashcards; let i = index" class="centre fill">
+        <div 
+            class="centre fill flashcard-container"
+            [style.left]="(i - currentFlashcardIndex).toString() + '00%'"
+            [style.top]="showAnswers[i] ? '-50%' : '50%'"
+            (click)="showAnswers[i] = true;"
+        >
+            <div class="centre fill flashcard"> 
+                <div class="note-container">
+                    <app-render-note 
+                        class="note"
+                        [style.text-align]="'center'"
+                        [note]="{type: 'title', value: flashcard.value, content: []}"
+                        [notePath]="[0]"
+                    ></app-render-note>
+                </div>
+            </div>
+        </div>
+
+        <div 
+            class="centre fill flashcard-container"
+            [style.left]="(i - currentFlashcardIndex).toString() + '00%'"
+            [style.top]="showAnswers[i] ? '50%' : '150%'"
+            (click)="showAnswers[i] = i != currentFlashcardIndex"
+        >
+            <div class="centre fill flashcard">
+                <div class="note-container">
+                    <app-notes-recurse 
+                        *ngIf="flashcard.type == 'toggle'"
+                        class="note" 
+                        [notes]="flashcard.content"
+                    ></app-notes-recurse>
+
+                    <app-render-note 
+                        *ngIf="flashcard.type != 'toggle' && flashcard.value.includes('cloze')"
+                        class="note"
+                        [style.text-align]="'center'"
+                        [note]="{type: 'title', value: flashcard.value.replaceAll('cloze', ''), content: []}"
+                        [notePath]="[0]"
+                    ></app-render-note>
+                </div>
+
+                <div *ngIf="showConfidenceLevel[i]" class="confidence-level">
+                    <div (click)="recordConfidenceLevel(0)">Easy</div>
+                    <div (click)="recordConfidenceLevel(1)">Average</div>
+                    <div (click)="recordConfidenceLevel(2)">Hard</div>
+                    <div (click)="recordConfidenceLevel(3)">Again</div>
+                </div>        
+            </div>
+        </div>
+
+        
+        <div *ngIf="currentFlashcardIndex != 0" class="move centre left" (click)="moveLeft()">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+        </div>
+        <div class="move centre right"  (click)="moveRight()">
+            <mat-icon>keyboard_arrow_right</mat-icon>
+        </div>
+    </div>
+
+    
+    <div class="centre fill flashcard-container"
+        [style.left]="(flashcardsService.flashcards.length - currentFlashcardIndex).toString() + '00%'"
+    >
+        <div class="centre fill flashcard">
+            <app-render-note 
+                [note]="{type: 'title', value: 'No more flashcards', content: []}"
+                [notePath]="[0]"
+            ></app-render-note>     
+        </div>
+        <div class="move centre left" (click)="moveLeft()"><mat-icon>keyboard_arrow_left</mat-icon></div>
+    </div>
+
+    <div 
+        class="centre close" 
+        (click)="flashcardsService.backToNotes()"
+    ><mat-icon>close</mat-icon></div>
+</div>

@@ -1,0 +1,44 @@
+<div class="share-button-container">
+    <div class="centre share-button" (click)="sharingOpen = !sharingOpen">
+        <img class="share-icon" src="assets/share.png">
+    </div>    
+</div>
+<div 
+    class="share-container" 
+    [style.transform]="sharingOpen ? 'translateX(-30px)' : 'translateX(100%)'"
+>
+    <div class="input-container">
+        <input placeholder="Email" class="email-input">
+        <div class="centre email-button">Invite</div>
+    </div>
+    <div class="input-container">
+        <img class="user-icon" src="https://openseauserdata.com/files/3085b3fc65f00b28699b43efb4434eec.png">
+        <div class="user-email">17loukam@students.watfordboys.org</div>
+        <div class="user-permission">
+            <mat-icon class="move left">keyboard_arrow_left</mat-icon>
+            <div class="permission-level">Owner</div>
+            <mat-icon class="move right">keyboard_arrow_right</mat-icon>
+        </div>
+        <div class="user-remove"><mat-icon>close</mat-icon></div>
+    </div> 
+    <div class="input-container">
+        <img class="user-icon"src="https://openseauserdata.com/files/3085b3fc65f00b28699b43efb4434eec.png">
+        <div class="user-email">17nairn@students.watfordboys.org</div>
+        <div class="centre user-permission">
+            <mat-icon class="move left">keyboard_arrow_left</mat-icon>
+            <div class="permission-level">Editor</div>
+            <mat-icon class="move right">keyboard_arrow_right</mat-icon>
+        </div>
+        <div class="user-remove"><mat-icon>close</mat-icon></div>
+    </div> 
+    <div class="input-container">
+        <img class="user-icon"src="https://openseauserdata.com/files/3085b3fc65f00b28699b43efb4434eec.png">
+        <div class="user-email">meyerlouka6@gmail.com</div>
+        <div class="user-permission">
+            <mat-icon class="move left">keyboard_arrow_left</mat-icon>
+            <div class="permission-level">Viewer</div>
+            <mat-icon class="move right">keyboard_arrow_right</mat-icon>
+        </div>
+        <div class="user-remove"><mat-icon>close</mat-icon></div>
+    </div> 
+</div>

@@ -1,0 +1,16 @@
+<div class="bullet">
+    <div style="display: flex">
+        <div class="circle"></div>
+        <div 
+            class="bullet-point" 
+            data-text="Type Something" 
+            contenteditable="true"
+        >
+            {{ value }}
+        </div>
+    </div>
+
+    <div style="margin-left: -10px;">
+        <app-recursive [data]="content"></app-recursive>
+    </div>
+</div>

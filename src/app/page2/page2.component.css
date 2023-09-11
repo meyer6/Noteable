@@ -1,0 +1,121 @@
+.caret {
+    padding-left: 4px;
+    padding-right: 2px;
+    margin-right: 5px;
+    margin-top: -2px;
+    
+    border-radius: 4px;
+    font-size: 14px;
+
+    cursor: pointer;
+    user-select: none;
+
+    transition: rotate 0.3s;
+}
+.caret:hover {
+    background: #EFEFEF;
+}
+
+
+.options-bar-background {
+    display: flex; 
+    justify-content: center; 
+    background: white;
+}
+
+
+.options-bar-container {
+    position: fixed;
+    bottom: calc(100vh - 8px);
+    max-width: 50%;
+
+    padding-bottom: 30px;
+    margin-bottom: -30px;
+
+    transition: transform 0.3s;
+}
+.options-bar-container:hover {
+    transform: translateY(calc(100% - 40px)); 
+}
+
+.options-bar {
+    display: flex;
+    padding: 5px;
+    padding-left: 10px;
+
+    background: white;
+    border-radius: 0px 0px 6px 6px;
+    box-shadow: 0px 0px 10px 5px #dedede;
+    align-items: center;
+}
+
+
+.pick-option-type {
+    font-size: 16px;
+    letter-spacing: 0.6px;
+    border: 0px;
+    padding: 6px;
+    border-radius: 4px;
+    margin-right: 10px;
+    display: flex;
+    background: transparent;
+    cursor: pointer;
+}
+.pick-option-type:hover {
+    background: #EFEFEF
+}
+
+.dropdown-button{
+    margin-left: 8px;
+    margin-top: 3px;
+    height: 6px;
+    width: 6px;
+    border-right: 1.5px solid black;
+    border-bottom: 1.5px solid black;
+    transform: rotate(45deg); 
+}
+
+.option-image {
+    height: 40px;
+    border-radius: 4px;
+    margin-right: 2px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+.option-image:hover {
+    border: 1.5px #a7a7a7 solid;
+}
+
+
+.divider {
+    width: 1px;
+    height: 30px;
+    margin: 5px;
+    background-color: #cecece;
+}
+
+.container {
+    display: grid; 
+    letter-spacing: 0.8px; 
+    font-size: 15px;
+    color: #2d2b27;
+}
+
+.select-box {
+    background: #abd4ff;
+    opacity: 0.4;
+    position: absolute;
+}
+
+.style-option-container {
+    padding: 10px; 
+    font-size: 20px;
+    border-radius: 4px;
+    border: 0px;
+    background: transparent;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+.style-option-container:hover {
+    background: #EFEFEF
+}

@@ -1,0 +1,300 @@
+<div 
+    *ngIf="notesInteractionService.selectedComponentPath.toString() == notePath.toString()"
+    class="delete-icon-container"
+    (mousedown)="delete()"
+>
+    <mat-icon class="delete-icon">delete</mat-icon>
+</div>
+
+<div
+    *ngIf="note.confidenceLevel != undefined"
+    class="confidence-level"
+    [style.background]="confidenceColour"
+></div>
+
+<div 
+    class="container"
+    [ngStyle]="notesInteractionService.selectedComponentPath.toString() == notePath.toString() ? {
+        background: '#E0EDFB'
+    } : {}"   
+    (click)="notesInteractionService.focusedComponentPath = notePath; $event.stopPropagation()"
+>
+    <div *ngIf="note.type == 'title'">
+        <div 
+            class="title universal" 
+            [contentEditable]="true"
+            placeholder="Type something"
+            
+            [innerHTML]="noteValue"
+            (input)="updateValue($event)"            
+            (paste)="paste($event)"
+        ></div>
+
+        <div class="content">
+            <app-notes-recurse 
+                [notes]="note.content"
+                [notePath]="notePath"
+            ></app-notes-recurse>
+        </div>
+    </div>
+
+
+    <div *ngIf="note.type == 'subHeading' && note.subHeadingType != undefined">
+        <div 
+            class="subheading universal" 
+            [style.font-size.px]="[30, 24, 20][note.subHeadingType - 1]"
+            [style.line-height.px]="[39, 31, 26][note.subHeadingType - 1]"
+            [contentEditable]="true"
+            placeholder="Type something"
+            
+            [innerHTML]="noteValue"
+            (input)="updateValue($event)"            
+            (paste)="paste($event)"
+        ></div>
+
+        <div class="content">
+            <app-notes-recurse 
+                [notes]="note.content"
+                [notePath]="notePath"
+            ></app-notes-recurse >
+        </div>
+    </div>
+
+
+    <div *ngIf="note.type == 'text'">
+        <div 
+            class="text universal" 
+            [contentEditable]="true"
+            placeholder="Type something"
+            
+            [innerHTML]="noteValue"
+            (input)="updateValue($event)"            
+            (paste)="paste($event)"            
+        ></div>
+
+        <div class="content">
+            <app-notes-recurse 
+                [notes]="note.content"
+                [notePath]="notePath"
+            ></app-notes-recurse >
+        </div>
+    </div>
+
+    <div *ngIf="note.type == 'page'" class="page-container">
+        <div class="left-content-container">
+            <div class="left-content">    
+                <img class="page-img" src="assets/page.png">
+            </div>
+            <div 
+                class="text page universal"          
+                [innerHTML]="pageTitle"
+                (click)="navigatorService.moveToChildNotes(note.value)"
+            ></div>
+        </div>
+        <div class="content">
+            <app-notes-recurse 
+                [notes]="note.content"
+                [notePath]="notePath"
+            ></app-notes-recurse >
+        </div>
+    </div>
+
+    <div *ngIf="note.type == 'bulletPoint'">
+        <div class="left-content-container">
+            <div class="left-content">
+                <div *ngIf="indentLevel == 2"
+                    class="bullet bullet1"
+                ></div>
+                <div *ngIf="indentLevel == 0"
+                    class="bullet bullet2"
+                ></div>
+                <div *ngIf="indentLevel == 1"
+                    class="bullet"
+                ></div>
+            </div>
+
+            <div 
+                class="text universal" 
+                [contentEditable]="true"
+                placeholder="Type something"
+                
+                [innerHTML]="noteValue"
+                (input)="updateValue($event)"            
+                (paste)="paste($event)"
+            ></div>
+        </div>
+
+        <div class="content">
+            <app-notes-recurse 
+                [notes]="note.content"
+                [notePath]="notePath"
+            ></app-notes-recurse >
+        </div>
+    </div>
+
+
+    <div *ngIf="note.type == 'numberedPoint'">
+        <div class="left-content-container">
+            <div class="left-content number">
+                {{ numberedListValue }}.
+            </div>
+
+            <div 
+                class="text universal" 
+                [contentEditable]="true"
+                placeholder="Type something"
+                
+                [innerHTML]="noteValue"
+                (input)="updateValue($event)"            
+                (paste)="paste($event)"
+            ></div>
+        </div>
+
+        <div class="content">
+            <app-notes-recurse 
+                [notes]="note.content"
+                [notePath]="notePath"
+            ></app-notes-recurse >
+        </div>
+    </div>
+
+
+    <div *ngIf="note.type == 'toDoList'">
+        <div class="left-content-container">
+            <div class="left-content number">
+                <input 
+                    class="checkbox" 
+                    type="checkbox" 
+                    [checked]="note.open" 
+                    (click)="note.open = !note.open; $event.stopPropagation()"
+                >
+                <div 
+                    class="tick-container" 
+                    *ngIf="note.open"
+                    (click)="note.open = !note.open"
+                >
+                    <div class="tick"></div>
+                </div>
+            </div>
+
+            <div 
+                class="text universal to-do-list-text" 
+                [contentEditable]="true"
+                placeholder="Type something"
+                [style.color]="note.open ? 'rgba(55, 53, 47, 0.65)' : 'inherit'"
+                [style.text-decoration-line]="note.open ? 'line-through' : 'inherit'"
+                [innerHTML]="noteValue"
+                (input)="updateValue($event)"            
+                (paste)="paste($event)"
+            ></div>
+        </div>
+
+        <div class="content">
+            <app-notes-recurse 
+                [notes]="note.content"
+                [notePath]="notePath"
+            ></app-notes-recurse >
+        </div>
+    </div>
+
+
+    <div *ngIf="note.type == 'toggle'">
+        <div class="left-content-container">
+            <div class="left-content">
+                <div class="caret" 
+                    (click)="note.open = !note.open" 
+                    [style.rotate.deg]="note.open ? 90 : 0"
+                >▶</div>
+            </div>
+
+            <div 
+                class="text universal" 
+                [contentEditable]="true"
+                placeholder="Type something"
+                
+                [innerHTML]="noteValue"
+                (input)="updateValue($event)"            
+                (paste)="paste($event)"
+            ></div>
+        </div>
+
+        <div 
+            *ngIf="note.open"
+            class="content"
+        >
+            <app-notes-recurse 
+                [notes]="note.content"
+                [notePath]="notePath"
+            ></app-notes-recurse >
+        </div>
+    </div>
+
+
+    <div *ngIf="note.type == 'pageToggle'">
+        <div class="left-content-container">
+            <div class="left-content">
+                <div class="caret" 
+                    (click)="note.open = !note.open" 
+                    [style.rotate.deg]="note.open ? 90 : 0"
+                >▶</div>
+            </div>
+
+            <div class="left-content-container page-toggle page-container">
+                <div class="left-content">    
+                    <img class="page-img" src="assets/page.png">
+                </div>
+                <div 
+                    class="text page universal"          
+                    [innerHTML]="pageTitle"
+                    (click)="navigatorService.moveToChildNotes(note.value)"
+                ></div>
+            </div>
+        </div>
+
+        <div 
+            *ngIf="note.open"
+            class="content"
+        >
+            <app-notes-recurse 
+                [notes]="note.content"
+                [notePath]="notePath"
+            ></app-notes-recurse >
+        </div>
+    </div>
+
+
+    <div *ngIf="note.type == 'divider'">
+        <div class="divider-space"></div>
+        <div class="divider"></div>
+        <div class="divider-space"></div>
+    </div>
+
+
+    <div *ngIf="note.type == 'image' && note.width != undefined">
+        <div class="image-container">
+            <img
+                [src]="noteValue"
+                [style.width]="'min(100% - 15px, ' + note.width.toString() + 'px)'"
+                [draggable]="false"
+            >
+            <div class="resize-bar" (mousedown)="imageResize($event)"></div>
+        </div>
+    </div>
+
+
+    <div *ngIf="note.type == 'iframe' && note.width != undefined">
+        <div class="image-container">
+            <iframe
+                [src]="noteValue | safeUrl"
+                [style.width]="'min(100% - 15px, ' + note.width.toString() + 'px)'"
+                [style.aspect-ratio]="16 / 9"
+                [draggable]="false"
+            ></iframe>
+            <div class="resize-bar" (mousedown)="imageResize($event)"></div>
+        </div>
+    </div>
+
+    <div *ngIf="note.type == 'repl'">
+        <app-repl [note]="note"></app-repl>
+    </div>
+</div>    

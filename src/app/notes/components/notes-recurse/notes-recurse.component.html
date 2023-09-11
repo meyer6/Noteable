@@ -1,0 +1,44 @@
+<div 
+    *ngIf="notes != undefined && notes[0] != undefined && notes[0].type != 'title'"
+    class="placeholder"
+    [style.opacity]="checkPlaceholderState(-1) ? 1 : 0"
+    (mouseenter)="setHoverComponent(-1)"
+></div>
+
+<div *ngFor="let note of notes; let i = index">
+    <div 
+        class="top-margin"
+        *ngIf="note.type == 'subHeading' && note.subHeadingType != undefined"
+        [style.height.px]="[30, 24, 20][note.subHeadingType - 1]"
+        (mouseenter)="setHoverComponent(i - 1)"
+    ></div>
+
+    <div class="note">
+        <app-render-note 
+            [note]="note"
+            [notePath]="notePath.concat([i])"
+            (mouseenter)="setHoverComponent(i)"     
+        ></app-render-note>
+
+        <div 
+            class="handle"
+            *ngIf="note.type != 'title'"
+            (mousedown)="startDragging(i, $event)"
+            (click)="selectComponent(i)"
+        >
+            <div class="handle-png-container"> 
+                <img 
+                    class="handle-png" 
+                    src="assets/6Dots.png" 
+                    [draggable]="false"
+                >
+            </div>
+        </div>
+
+        <div 
+            class="placeholder"
+            [style.opacity]="checkPlaceholderState(i) ? 1 : 0"
+            (mouseenter)="setHoverComponent(i)"
+        ></div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="handle">
+    <div class="handle-png-container" id="{{currentLocation}}"      
+        (mousedown)="taskManager.startHighlightDrag($event)"      
+        (mouseenter)="handleView=true"
+        (mouseleave)="handleView=false"
+        [ngStyle]="{'opacity': handleView && !taskManager.beingDragged ? 1 : 0}"
+    > 
+        <img class="handle-png" 
+            src="assets/6Dots.png" 
+            draggable="false"
+            (mousedown)="startDragging($event)"
+            id="{{currentLocation}}"
+        >
+    </div>
+</div>

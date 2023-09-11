@@ -1,0 +1,44 @@
+<!-- <div>
+    <div class="placeholder-container" id="-1"
+        *ngIf="data[0].type!='heading'"
+        (mouseenter)="mouseEnter($event)" 
+        >
+        <div class="placeholder" [ngStyle]="{'opacity': -1 == dataLocations[1] && beingDragged ? 1 : 0}"></div>
+    </div>
+</div> -->
+
+<div *ngFor="let dataInstance of taskManager.data; let i = index" 
+    [ngStyle]="{'user-select': taskManager.beingDragged ? 'none' : 'initial'}"
+>
+    <div class="content">
+        <!-- <div class="handle" id="{{i}}" 
+            *ngIf="dataInstance.type!='heading'"          
+            (mousedown)="startDragging($event)"
+            (mouseenter)="viewHandle($event)"
+            (mouseleave)="unviewHandle($event)"
+        >
+            <div class="handle-png-container">
+                <img class="handle-png" id="{{i}}" 
+                    draggable="false" 
+                    src="assets/6Dots.png" 
+                    [ngStyle]="{'opacity': i == handleView ? 1 : 0}"
+                >
+            </div>
+        </div> -->
+        
+        <app-page-component-sorter [data]="dataInstance" [taskManager]="taskManager" style="width: 100%"></app-page-component-sorter>  
+    </div>
+    
+    <div class="placeholder-container" id={{i}}
+        (mouseenter)="taskManager.mouseEnter($event)" 
+    >
+        <div class="placeholder" [ngStyle]="{'opacity': i == taskManager.dataLocations[1] && taskManager.beingDragged ? 1 : 0}"></div>
+    </div>
+
+    <div class="drag-preview" 
+        *ngIf="taskManager.beingDragged && i==taskManager.dataLocations[0]" 
+        [ngStyle]="{'left': taskManager.mouseCoords[0] + 'px', 'top': taskManager.mouseCoords[1] + 'px'}"
+    >
+        <app-page-component-sorter [data]="dataInstance" [taskManager]="taskManager" ></app-page-component-sorter>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+<div id="{{currentLocation}}" 
+    class="placeholder" 
+    *ngIf="!isParent"
+    [ngStyle]="{'opacity': isHoveredOver ? 1 : 0}"
+    (mouseenter)="taskManager.dataLocations[1]=currentLocation"
+></div>
+<div *ngIf="isParent" style="height: 4px; width: 100%"></div>

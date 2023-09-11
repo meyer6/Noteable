@@ -1,0 +1,77 @@
+.background {
+    background: rgb(174,127,221);
+    background: radial-gradient(circle, rgba(174,127,221,1) 21%, rgba(76,98,217,1) 100%);
+    width: 100vw;
+    height: 100vh;
+}
+
+.center-screen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%); 
+}
+
+.card {
+    padding: 8px;
+    padding-bottom: 0px;
+    width: 350px;
+
+    border-radius: 10px;
+    border-width: 3px;
+    border-color: #3F51B5;
+    text-align: center;
+}
+
+.input-box {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.show-password-button {
+    margin-right:8px; 
+}
+
+.login-button{
+    width: 70%;
+    height: 40px;
+    font-size: 20px;
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin-top: 10px;
+}
+.separator::before,
+.separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #000;
+}
+.separator:not(:empty)::before {
+    margin-right: .25em;
+}
+.separator:not(:empty)::after {
+    margin-left: .25em;
+}
+
+.google-button{
+    margin-top: 2px; 
+    margin-bottom: 2px; 
+    padding-top: 25px; 
+    padding-bottom: 27px; 
+    width: 80%
+}
+.google-image{
+    width: 50px; 
+    height:30px;  
+    padding-top: 5px; 
+    float: left
+}
+.google-text{
+    float: right; 
+    padding-top: 10px
+}

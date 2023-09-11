@@ -1,0 +1,27 @@
+.handle {
+    color: #ccc;
+    user-select: none;
+}
+
+.handle-png-container {
+    padding-left: 150px; 
+    margin-left: -150px;
+
+    margin-top: -11px;
+
+    padding-bottom: 5px;
+    margin-bottom: -5px; 
+}
+
+.handle-png{
+    position: relative;
+    top: 11px;
+    
+    width: 13px; 
+    padding: 3px;
+    border-radius: 4px;
+    cursor: grab;
+}
+.handle-png:hover {
+    background: #EFEFEF;
+}

@@ -1,0 +1,40 @@
+
+
+<div 
+    class="flashcards-options-container"
+    (click)="openFlashcardOptions()"
+>
+    <div 
+        class="review-options-container"
+        [style.opacity]="flashcardsOptionOpen ? '1' : '0'"
+    >
+        <div 
+            class="flashcard-review-option"
+            [style.transform]="flashcardsOptionOpen ? 'translateY(57px)' : 'translateY(126px)'"
+            (click)="flashcardFullReview()"
+        >
+            Full review
+        </div>
+        <div 
+            class="flashcard-review-option"
+            [style.transform]="flashcardsOptionOpen ? 'translateY(57px)' : 'translateY(94px)'"
+            (click)="flashcardmartReview(1)"
+        >
+            Thorough review
+        </div>
+        <div 
+            class="flashcard-review-option"
+            [style.transform]="flashcardsOptionOpen ? 'translateY(57px)' : 'translateY(62px)'"
+            (click)="flashcardmartReview(2)"
+        >
+            Quick review
+        </div>
+    </div>
+
+    <div 
+        class="flashcards-option"
+        [style.transform]="flashcardsOptionOpen ? 'translateY(-99px)' : 'translateY(0)'"
+    >
+        <img class="flashcard-icon" src="assets/flashcardsIcon.png">
+    </div>    
+</div>

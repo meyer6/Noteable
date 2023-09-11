@@ -1,0 +1,11 @@
+.heading {
+    font-size: 38px;
+    font-weight: bold;
+    color: inherit;
+
+    margin-left: 18px;
+    letter-spacing: 0.8px;
+    border: 0px;
+    outline: none;
+    word-wrap: break-word
+}

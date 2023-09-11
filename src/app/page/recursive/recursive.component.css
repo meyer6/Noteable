@@ -1,0 +1,53 @@
+.content {
+    display: flex; 
+}
+
+.placeholder-container {
+    margin-top: -5px;
+    padding-top: 10px;
+}
+
+.placeholder {
+    background: #A0CAF2;
+    border: 0px;
+    border-radius: 4px;
+    height: 4px;
+
+    margin-left: 20px;
+
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.drag-preview {
+    position: absolute;
+    opacity: 0.4;
+}
+
+.handle {
+    color: #ccc;
+    user-select: none;
+}
+
+.handle-png-container {
+    padding-left: 150px; 
+    margin-left: -150px;
+
+    margin-top: -11px;
+
+    padding-bottom: 5px;
+    margin-bottom: -5px; 
+}
+
+.handle-png{
+    position: relative;
+    top: 11px;
+    
+    width: 13px; 
+    padding: 3px;
+    border-radius: 4px;
+    cursor: grab;
+}
+.handle-png:hover {
+    background: #EFEFEF;
+}

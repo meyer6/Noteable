@@ -1,0 +1,42 @@
+.container {
+    position: fixed;
+    top: 15px;
+}
+
+.breadcrumb {
+    position: absolute; 
+    left: 13px; 
+
+    border-left: 1px solid;
+    display: grid;
+}
+
+.title-container {
+    display: flex;
+    padding: 3px;
+}
+.title-container:hover {
+    cursor: pointer;
+    user-select: none;
+    background: #EFEFEF;
+    border-radius: 4px;
+}
+
+.page-img {
+    width: 15px;
+    height: 15px;
+    margin-right: 3px;
+}
+
+.title {
+    max-width: 130px;
+
+    color: #37352f;
+    font-size: 14px;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(55, 53, 47, 0.16);
+    
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

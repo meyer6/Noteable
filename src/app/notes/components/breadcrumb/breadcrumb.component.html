@@ -1,0 +1,8 @@
+<div class="container">
+    <div class="breadcrumb">
+        <div *ngFor="let title of titles; let i = index" class="title-container">
+            <img class="page-img" src="assets/page.png">
+            <div class="title" (click)="move(i)" [innerHTML]="title"></div>
+        </div>
+    </div>
+</div>

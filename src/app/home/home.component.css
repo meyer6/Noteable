@@ -1,0 +1,14 @@
+.container {
+    display: flex;
+}
+
+.sidebar-container {
+    height: fit-content;
+    width: fit-content;
+}
+
+.page-container {
+    /* background: black; */
+    max-height: 100vh;
+    flex: 1
+}

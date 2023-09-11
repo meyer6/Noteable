@@ -1,0 +1,96 @@
+<div contenteditable="false">
+    <app-placeholder
+        contenteditable="false"
+        *ngIf="data[0]!=undefined && data[0].type!='heading'"
+        [taskManager]="taskManager" 
+        [currentLocation]="currentLocation.concat([-1])"
+    >
+    </app-placeholder>
+</div>
+<!-- <div class="placeholder"
+    id="{{currentLocation.concat([-1])}}" 
+    (mouseenter)="taskManager.updateDragLocation($event)"
+
+    *ngIf="(!taskManager.beingDragged || 
+        taskManager.dataLocations[0].toString() != currentLocation.concat([-1]).splice(0, taskManager.dataLocations[0].length).toString()) &&
+        data!=null && 
+        data[0]!=undefined &&
+        data[0].type!='heading'"
+
+    [ngStyle]="{'opacity': currentLocation.concat([-1]).toString() == taskManager.dataLocations[1].toString() && 
+        taskManager.beingDragged ? 1 : 0}"
+></div> -->
+
+<!-- <div 
+    contenteditable="false"
+    *ngIf="taskManager.beingDragged && 
+    taskManager.dataLocations[0].toString() == currentLocation.concat([-1]).splice(0, taskManager.dataLocations[0].length).toString()"
+    style="height: 4px; width: 100%">
+</div> -->
+
+<div *ngFor="let dataInstance of data; let i = index">
+
+    <div id="{{currentLocation.concat([i - 1])}}" 
+        contenteditable="false" 
+        (mouseenter)="taskManager.dataLocations[1]=currentLocation.concat([i - 1])"
+        *ngIf="dataInstance.type!='heading'"
+    >
+        <div style="height: 10px;"></div>
+        <div style="height: 2px" *ngIf="dataInstance.type=='bulletPoint'"></div>
+        <div [ngStyle]="{'height': ((4 - dataInstance.extraData) * 11).toString() + 'px'}"
+            *ngIf="dataInstance.type=='subHeading'" 
+        ></div>
+    </div>
+    
+    <div style="display: flex">
+        <app-handle2 
+            contenteditable="false"
+            *ngIf="dataInstance.type!='heading'" 
+            [currentLocation]="currentLocation.concat([i])" 
+            [taskManager]="taskManager"
+        ></app-handle2>
+
+        <app-component-sorter 
+            style="width: 100%"
+            [dataInstance]="dataInstance" 
+            [taskManager]="taskManager" 
+            [currentLocation]="currentLocation.concat([i])"
+        ></app-component-sorter>        
+    </div>
+
+    <!-- <div id="{{currentLocation.concat([i])}}" 
+        class="placeholder" 
+
+        (mouseenter)="taskManager.updateDragLocation($event)"
+        *ngIf="!taskManager.beingDragged || 
+            taskManager.dataLocations[0].toString() != currentLocation.concat([i]).splice(0, taskManager.dataLocations[0].length).toString()"
+        [ngStyle]="{'opacity': currentLocation.concat([i]).toString() == taskManager.dataLocations[1].toString() 
+            && taskManager.beingDragged ? 1 : 0}"
+    ></div>
+
+    <div *ngIf="taskManager.beingDragged && 
+        taskManager.dataLocations[0].toString() == currentLocation.concat([i]).splice(0, taskManager.dataLocations[0].length).toString()"
+        style="height: 4px; width: 100%">
+    </div> -->
+    <div contenteditable="false">
+        <app-placeholder 
+            [taskManager]="taskManager" 
+            [currentLocation]="currentLocation.concat([i])"
+        >
+        </app-placeholder>
+    </div>
+
+    <div class="drag-preview"
+        contenteditable="false"        
+        *ngIf="taskManager.beingDragged && 
+            currentLocation.concat([i]).toString() == taskManager.dataLocations[0].toString()" 
+        [ngStyle]="{'left': taskManager.mouseCoords[0] + 'px', 
+            'top': taskManager.mouseCoords[1] + 'px'}"
+    >
+        <app-component-sorter
+            [dataInstance]="dataInstance" 
+            [taskManager]="taskManager" 
+            [currentLocation]="currentLocation.concat([i])"
+        ></app-component-sorter>
+    </div>
+</div>

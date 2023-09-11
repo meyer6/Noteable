@@ -1,0 +1,76 @@
+<!-- <div cdkDropListGroup>
+    <div cdkDropList class="list" (cdkDropListDropped)="drop($event)">
+        <div class="box" *ngFor="let movie of movies" cdkDrag>
+            <div class="handle" cdkDragHandle>||</div>
+            <div class="placeholder" *cdkDragPlaceholder></div>
+            {{movie}}
+        </div>
+    </div>
+</div> -->
+
+<!-- <div class="container" 
+    (dragleave)="dropLeave()" 
+    (dragenter)="dropEnter($event)"
+>
+    <div class="container2"  *ngFor="let movie of movies; let i = index">
+        <div class="content">
+            <div class="handle"  id="{{i}}"           
+                draggable="true"
+                (dragend)="drop()"
+                (drag)="dragPreview($event)"
+            >||</div>
+            {{movie}}
+        </div>
+
+        <div class="placeholder-container">
+            <div class="placeholder" id={{i}} [ngStyle]="{'opacity': i == hoveringOver ? 1 : 0}"></div>
+        </div>
+
+        <div
+            *ngIf="beingDragged && i==mouseCoords[2]" 
+            class="drag-preview" 
+            [ngStyle]="{'left': mouseCoords[0] + 'px', 'top': mouseCoords[1] + 'px'}"
+        >
+            {{movie}}
+        </div>
+
+    </div>
+</div> -->
+
+<div class="container" 
+    (mouseleave)="taskManager.mouseLeave()" 
+>
+    <app-recursive [taskManager]="taskManager" [data]="taskManager.data"></app-recursive>
+    <!-- <div *ngFor="let movie of movies; let i = index">
+        <div class="content">
+            <div class="handle" id="{{i}}"           
+                (mousedown)="startDragging($event)"
+                (mouseenter)="viewHandle($event)"
+                (mouseleave)="unviewHandle($event)"
+            >
+                <div class="handle-png-container">
+                    <img class="handle-png" id="{{i}}" 
+                        draggable="false" 
+                        src="assets/6Dots.png" 
+                        [ngStyle]="{'opacity': i == handleView? 1 : 0}"
+                    >
+                </div>
+            </div>
+            {{movie}}
+        </div>
+        
+        <div class="placeholder-container" id={{i}}
+            (mouseenter)="mouseEnter($event)" 
+        >
+            <div class="placeholder" [ngStyle]="{'opacity': i == dataLocations[1] && beingDragged ? 1 : 0}"></div>
+        </div>
+
+        <div class="drag-preview" 
+            *ngIf="beingDragged && i==dataLocations[0]" 
+            [ngStyle]="{'left': mouseCoords[0] + 'px', 'top': mouseCoords[1] + 'px'}"
+        >
+            {{movie}}
+        </div>
+    </div> -->
+</div>
+

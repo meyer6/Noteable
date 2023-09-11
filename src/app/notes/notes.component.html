@@ -1,0 +1,42 @@
+<app-options-bar></app-options-bar>
+
+<div class="container">
+    <app-breadcrumb [style.z-index]="'10'"></app-breadcrumb>
+
+    <app-sharing [style.z-index]="'10'"></app-sharing>
+
+
+    <div 
+        class="margin"
+        (mouseenter)="setHoverComponent()"
+    ></div>
+
+    <div class="notes">
+        <div class="top-margin"></div>
+        <app-notes-recurse 
+            [notes]="notesService.notes" 
+        ></app-notes-recurse>
+        <div class="bottom-margin"></div>
+    </div>
+
+    <div 
+        class="margin"
+        (mouseenter)="setHoverComponent()"
+    ></div>
+
+
+    <app-flashcards-options></app-flashcards-options>
+</div>
+
+<div 
+    class="drag-preview"
+    *ngIf="notesInteractionService.dragging"
+    [style.left.px]="notesInteractionService.mouseCoords[0] + 15"
+    [style.top.px]="notesInteractionService.mouseCoords[1] - 5"
+>
+    <app-render-note
+        [note]="notesInteractionService.componentBeingDragged"
+        [notePath]="notesInteractionService.startComponentPath"
+    ></app-render-note>
+</div>
+

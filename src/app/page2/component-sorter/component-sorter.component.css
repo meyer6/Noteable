@@ -1,0 +1,164 @@
+.universal {
+    color: #373534;
+    letter-spacing: 0.9px;
+    width: 100%;
+
+    border: 0px;
+    word-wrap: break-word;
+    outline:none;
+}
+
+.empty {
+    content:attr(data-text);
+    color:rgb(220, 220, 220);
+    letter-spacing: inherit;
+}
+
+
+.heading {
+    margin-top: 30px;
+    margin-left: 20px;
+    font-size: 38px;
+    font-weight: bold;
+    line-height: 35px;
+}
+
+
+.sub-heading {
+    font-weight: 600;
+}
+
+
+.text {
+    font-size: 15px;
+}
+
+
+.bullet {
+    font-size: 20px;
+}
+.circle {
+    background: #373534;
+    border-radius: 4px;
+    width: 7px;
+    height: 7px;
+    margin-top: 5px;
+    margin-right: 10px;
+}
+.white-circle {
+    border: 1px solid #373534;
+    border-radius: 4px;
+    width: 6px;
+    height: 6px;
+    margin-top: 6px;
+    margin-right: 10px;
+}
+.square {
+    background: #373534;
+    width: 7px;
+    height: 7px;
+    margin-top: 5px;
+    margin-right: 10px;
+}
+.font {
+    font-size: 15px;
+}
+
+
+.toggle-container {
+    font-size: 20px;
+}
+.caret {
+    padding-left: 4px;
+    margin-left: -5px;
+    padding-right: 2px;
+    margin-right: 3px;
+    margin-top: 0px;
+    height: 20px;
+    
+    border-radius: 4px;
+    font-size: 14px;
+
+    cursor: pointer;
+    user-select: none;
+
+    transition: rotate 0.3s;
+}
+.caret:hover {
+    background: #EFEFEF;
+}
+
+.toggle {
+    font-size: 15px;
+}
+
+
+[type=checkbox] {
+    appearance: none;
+
+    border: 1.5px solid black;
+    width: 16px;
+    height: 16px;
+    margin-left: -2px;
+    margin-top: 1px;
+    background: transparent;
+    transition: background 0.15s;
+}
+[type=checkbox]:hover {
+    background-color: #e1e1e1;
+}
+
+[type=checkbox]:checked {
+    border: 0px;
+    background-color: #2988e6;
+}
+.tick{
+    position: relative;
+    left: 2.5px;
+    top: -23px;
+    height: 8px;
+    width: 4.5px;
+    border-bottom: 2px solid white;
+    border-right: 2px solid white;
+    transform: rotate(45deg);
+}
+
+.image-slider {
+    margin-left: 10px; 
+    height: 50px; 
+    width: 5px; 
+    border-radius: 10px; 
+    transition: background 0.2s;
+}
+.image-container:hover .image-slider {
+    background: #cccccc
+}
+
+
+
+.divider {
+    height: 0.5px;
+    width: 100%;
+    background: #bfbfbf;
+    margin-top: 7px;
+}
+
+.delete-icon{
+    position: relative;
+    top: -2.5px;
+    height: 22px;
+    margin-bottom: -4px;
+    margin-left: auto; 
+    font-size: 20px;
+    opacity: 0.5;
+    padding: 2px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+.delete-icon:hover{
+    background: #bfbfbf;
+    opacity: 0.75;
+}

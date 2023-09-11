@@ -1,0 +1,24 @@
+<!-- <input 
+    class="sub-heading" 
+    value="{{ value }}"
+    [ngStyle]="{'font-size': ((3 - content) * 3 + 17).toString() + 'px', 'margin-top': ((4 - content) * 11).toString() + 'px'}"
+    placeholder="{{'Heading' + content.toString()}}"
+> -->
+
+<!-- <div 
+    class="sub-heading" 
+    data-text="{{'Heading' + content.toString()}}" 
+    contenteditable="true"
+    [ngStyle]="{'font-size': ((3 - content) * 3 + 17).toString() + 'px', 'margin-top': ((4 - content) * 11).toString() + 'px'}"
+>
+    {{ value }}
+</div> -->
+
+<div 
+    class="sub-heading" 
+    data-text='Untitled'
+    contenteditable="true"
+    [ngStyle]="{'font-size': ((3 - content) * 3 + 17).toString() + 'px', 'margin-top': ((4 - content) * 11).toString() + 'px'}"
+>
+    {{ value }}
+</div>

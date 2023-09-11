@@ -1,0 +1,31 @@
+[   
+    {
+        "type": "heading",
+        "value": "This is the heading",
+        "content": null,
+        "styling": [0, 0, ""]
+    },
+    {
+        "type": "subHeading",
+        "value": "This is the heading",
+        "content": 1
+    },
+    {
+        "type": "toggle",
+        "value": "This is the toggle",
+        "content": [
+            {
+                "type": "bulletpoint",
+                "value": "This is the bullet point",
+                "content": [
+                    {
+                        "type": "toggle",
+                        "value": "This is the bullet point",
+                        "content": null
+                    }
+        
+                ]     
+            }
+        ]       
+    }
+]

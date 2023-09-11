@@ -1,0 +1,17 @@
+.placeholder {
+    background: #A0CAF2;
+    border: 0px;
+    border-radius: 4px;
+    height: 4px;
+
+    margin-left: 20px;
+
+    transition: opacity 0.4s;
+}
+
+.drag-preview {
+    opacity: 0.4;
+    position: absolute;
+}
+
+

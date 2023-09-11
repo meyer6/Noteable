@@ -1,0 +1,103 @@
+<div class="container">
+    <div 
+        class="inner-container"
+        [ngStyle]="pinned || optionsOpen ? {'top': 0, 'transform': 'translate(-50%, 0)'} : {}"
+    >
+        <div class="options-bar">
+            <div 
+                class="caret" 
+                (click)="pinned = !pinned" 
+                [style.rotate.deg]="pinned ? 90 : 0"
+            >▶</div>
+
+            <div>
+                <div 
+                    class="pick-option-type" 
+                    (click)="optionsOpen = true"
+                    [matMenuTriggerFor]="options"
+                >
+                    {{ option }}
+                    <div class="dropdown-button"></div>
+                </div>
+            </div>
+
+            <div *ngIf="option == 'Insert'" class="options-container">
+                <div *ngFor="let insertOption of insertOptions">
+                    <img 
+                        *ngIf="insertOption[0] != 'Separator'"
+                        class="option-image" 
+                        [src]="insertOption[1]" 
+                        [title]="insertOption[0]"
+                        (click)="insertComponent(insertOption)"
+                    >
+                    <div *ngIf="insertOption[0] == 'Separator'" class="separator"></div>
+                </div>
+            </div>
+
+            <div *ngIf="option == 'Styling'" class="options-container">
+                <div 
+                    *ngFor="let stylingOption of stylingOptions"              
+                    class="style-option" 
+                    [style]="stylingOption[1]"
+                    (click)="styleText(stylingOption[2])"
+                >
+                    {{ stylingOption[0] }}
+                </div>
+                <div class="separator"></div>
+            </div>
+
+            <div 
+                *ngIf="option == 'Styling'"
+                class="pick-option-type" 
+                style="color: #3781AB; font-weight: 400; font-size: 20px;"  
+                [matMenuTriggerFor]="fontColoursMenu"
+                (click)="optionsOpen = true"
+            >
+                A
+                <div class="dropdown-button"></div>
+            </div>
+
+            <div 
+                *ngIf="option == 'Styling'"
+                class="pick-option-type" 
+                style="background-color:#E7F3F8;  font-weight: 400; font-size: 20px;"  
+                [matMenuTriggerFor]="backgroundColoursMenu"
+                (click)="optionsOpen = true"
+            > 
+                A
+                <div class="dropdown-button"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<mat-menu #options="matMenu" (closed)="optionsOpen = false">
+    <button mat-menu-item (click)="option='Insert'">Insert</button>
+    <button mat-menu-item (click)="option='Styling'">Styling</button>
+</mat-menu>
+
+
+<mat-menu #fontColoursMenu="matMenu" (closed)="optionsOpen = false">
+    <div mat-menu-item *ngFor="let colour of stylingColours">
+        <div class="styling-dropdown-option-container" (click)="styleText('foreColor', colour[1])">
+            <div
+                class="styling-dropdown-option"    
+                [style.color]="colour[1]" 
+            >A</div>
+            <div>{{colour[0]}}</div>
+        </div>
+    </div>
+</mat-menu>
+
+<mat-menu #backgroundColoursMenu="matMenu" (closed)="optionsOpen = false">
+    <div mat-menu-item *ngFor="let colour of stylingColours">
+        <div class="styling-dropdown-option-container" (click)="styleText('hilitecolor', colour[2])">
+            <div
+                class="styling-dropdown-option"    
+                [style.background]="colour[2]" 
+            >A</div>
+            <div>{{colour[0]}}</div>
+        </div>
+    </div>
+</mat-menu>

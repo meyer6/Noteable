@@ -1,0 +1,64 @@
+.heading {
+    font-size: 38px;
+    font-weight: bold;
+    color: inherit;
+
+    margin-left: 18px;
+    letter-spacing: 0.8px;
+    border: 0px;
+    outline: none;
+    word-wrap: break-word
+}
+
+
+.sub-heading {
+    font-weight: 600;
+    color: inherit;
+
+    letter-spacing: 0.8px;
+    border: 0px;
+    outline: none;
+    word-wrap: break-word
+}
+
+
+.text {
+    color: inherit;
+    font-size: inherit;
+    letter-spacing: inherit;
+
+    margin-top: 5px;
+    border: 0px;
+    outline: none;
+}
+
+
+.bullet {
+    margin-top: 5px;
+    margin-left: 20px;
+    font-size: 20px;
+}
+.circle {
+    background: #2d2b27;
+    border-radius: 4px;
+    width: 7px;
+    height: 7px;
+    margin-top: 5px;
+    margin-right: 10px;
+}
+.bullet-point {
+    color: inherit;
+    font-size: 15px;
+    letter-spacing: inherit;
+
+    border: 0px;
+    outline: none;
+}
+
+
+.divider {
+    height: 0.5px;
+    width: 80%;
+    background: #2d2b27;
+    margin-top: 10px;
+}

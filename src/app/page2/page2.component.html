@@ -1,0 +1,120 @@
+<div class="options-bar-background">
+    <div class="options-bar-container" [ngStyle]="{'top': pinned || optionsOpen ? '-2px' : null}">
+        <div class="options-bar">
+            <div class="caret" (click)="pinned = !pinned" [ngStyle]="{'rotate': (pinned ? 90 : 0) + 'deg'}">▶</div>
+
+            <div>
+                <button class="pick-option-type" (click)="optionsOpen=true" [matMenuTriggerFor]="options">
+                    {{option}}
+                    <div class="dropdown-button"></div>
+                </button>
+            </div>
+
+            <div *ngIf="option=='Insert'" style="display: flex; flex-flow: wrap; justify-content: center; ">
+                <div *ngFor="let option of insertOptions, let i=index">
+                    <div *ngIf="option[0]!='Separator'">
+                        <img class="option-image" (mousedown)="insertComponent(i)"
+                            src="{{option[1]}}" 
+                            title="{{option[0]}}"
+                        >
+                    </div>
+                    <div class="divider" *ngIf="option[0]=='Separator'"></div>
+                </div>
+            </div>
+
+            <div *ngIf="option=='Styling'" 
+                style="display: flex; flex-flow: wrap; justify-content: center; align-items: center;"
+            >
+                <button class="style-option-container"
+                    *ngFor="let option of stylingOptions, let i=index"
+                    (click)="changeStyling(option[2], '')"
+                >
+                    <div [style]="safeCss(option[1])">{{option[0]}}</div>
+                </button>                    
+                <div class="divider"></div>
+
+                <button class="pick-option-type" 
+                    style="color: #3781AB; font-weight: 400; font-size: 20px;"  
+                    [matMenuTriggerFor]="fontColoursMenu"
+                    (click)="optionsOpen=true"
+                >
+                    A
+                    <div class="dropdown-button"></div>
+                </button>
+
+                <button class="pick-option-type" 
+                    style="background-color:#E7F3F8;  font-weight: 400; font-size: 20px;"  
+                    [matMenuTriggerFor]="backgroundColoursMenu"
+                    (click)="optionsOpen=true"
+                > 
+                    A
+                    <div class="dropdown-button"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<mat-menu #options="matMenu" (closed)="optionsOpen=false">
+    <button mat-menu-item (click)="option='Insert'">Insert</button>
+    <button mat-menu-item (click)="option='Styling'">Styling</button>
+</mat-menu>
+<mat-menu #fontColoursMenu="matMenu" (closed)="optionsOpen=false">
+    <button mat-menu-item 
+        *ngFor="let colour of colours, let i = index" 
+        (click)="changeStyling('foreColor', colour[1])"
+    >
+        <div style="display: flex;">
+            <div style="padding-top: 1px; width: 24px; height: 24px; border: 2px solid; border-radius: 4px; font-size: 20px; text-align: center; margin-right: 8px;"
+                [ngStyle]="{'color': colour[1]}">
+                A
+            </div>
+            <div>{{colour[0]}}</div>
+        </div>
+    </button>
+</mat-menu>
+<mat-menu #backgroundColoursMenu="matMenu" (closed)="optionsOpen=false">
+    <button mat-menu-item 
+        *ngFor="let colour of colours, let i = index" 
+        (click)="changeStyling('hiliteColor', colour[2])"
+    >
+        <div style="display: flex;">
+            <div style="padding-top: 1px; width: 24px; height: 24px; border: 1.5px solid; border-radius: 4px; font-size: 20px; text-align: center; margin-right: 8px;"
+                [ngStyle]="{'background-color': colour[2]}">
+                A
+            </div>
+            <div>{{colour[0]}}</div>
+        </div>
+    </button>
+</mat-menu>
+
+
+<div style="display: flex; justify-content: center; height: auto; align-items: stretch;" id="scroll-container">
+    <div (mousedown)="taskManager.startHighlightDrag($event)" style="width: max(100px, calc(50% - 365px))"></div>
+    <div class="container" 
+        style="width: min(calc(100% - 200px), 730px);"
+        (mouseleave)="taskManager.dataLocations[1] = []" 
+        (dragstart)="false" 
+    >
+        <div style="height: 130px" (mousedown)="taskManager.startHighlightDrag($event)"></div>
+        <app-recursive2 
+            contenteditable="true"
+            (keydown)="taskManager.currentKeyPress=$event"
+            [data]="taskManager.data" 
+            [taskManager]="taskManager" 
+            [currentLocation]="[]"
+        ></app-recursive2>
+        <div style="height: 150px" (mousedown)="taskManager.startHighlightDrag($event)"></div>
+    </div>
+
+
+    <div (mousedown)="taskManager.startHighlightDrag($event)" style="width: max(100px, calc(50% - 365px))"></div>
+</div>
+    
+<div class="select-box" 
+    *ngIf="taskManager.selectingWindow[0] != -1"
+    [ngStyle]="{'left': min(taskManager.mouseCoords[0] - 20, taskManager.selectingWindow[0]) + 'px', 
+        'top': min(taskManager.mouseCoords[1], taskManager.selectingWindow[1]) + 'px',
+        'width': abs(taskManager.selectingWindow[0] - taskManager.mouseCoords[0] + 20) + 'px', 
+        'height': abs(taskManager.selectingWindow[1] - taskManager.mouseCoords[1]) + 'px'}"
+></div>

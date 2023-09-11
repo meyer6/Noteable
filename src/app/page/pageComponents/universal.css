@@ -1,0 +1,5 @@
+div:empty:before {
+    content:attr(data-text);
+    color:rgb(220, 220, 220);
+    letter-spacing: inherit;
+}

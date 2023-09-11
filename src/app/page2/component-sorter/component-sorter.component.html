@@ -1,0 +1,185 @@
+<div style="display: flex; padding: 5px; margin: -5px; border-radius: 3px; transition: background 0.2s;" [ngStyle]="{'background': taskManager.selectedComponent.toString()==currentLocation.toString() ? '#E0EDFB': null}">
+    <div *ngIf="dataInstance.type=='heading'"  
+        style="width: 100%"
+        class="heading universal" 
+        id="parent"
+        tabindex="0"
+        (focus)="focus($event)"
+        (paste)="paste($event)"
+        [innerHTML]="(focused != null || dataInstance.value!='<br>' ? dataInstance.value : 'Untitled') | safeHtml"
+        [ngStyle]="{'color': focused != null || dataInstance.value!='<br>' ? 'inherit' : 'rgb(220, 220, 220)'}"
+    ></div>   
+
+
+    <div *ngIf="dataInstance.type=='subHeading'" style="width: 100%">
+        <div
+            class="sub-heading universal" 
+            id="parent"
+            [ngStyle]="{'font-size': ((3 - dataInstance.extraData) * 3 + 17).toString() + 'px',
+            'color': focused != null || dataInstance.value!='<br>' ? 'inherit' : 'rgb(220, 220, 220)'}"
+            tabindex="0"
+            (focus)="focus($event)"
+            (paste)="paste($event)"
+            [innerHTML]="(focused != null || dataInstance.value!='<br>' ? dataInstance.value : 'Type Something') | safeHtml"
+        ></div>
+        <div style="margin-left: 12px;">
+            <app-recursive2 
+                [data]="dataInstance.content" 
+                [taskManager]="taskManager" 
+                [currentLocation]="currentLocation"
+            ></app-recursive2>
+        </div>
+    </div>
+
+
+    <div *ngIf="dataInstance.type=='text'" style="width: 100%">
+        <div 
+            class="text universal" 
+            id="parent"
+            tabindex="0"
+            (focus)="focus($event)"
+            (paste)="paste($event)"
+            [innerHTML]="(focused != null || dataInstance.value!='<br>' ? dataInstance.value : 'Type Something') | safeHtml"
+            [ngStyle]="{'color': focused != null || dataInstance.value!='<br>' ? 'inherit' : 'rgb(220, 220, 220)'}"
+        ></div>
+
+        <div style="margin-left: 12px;">
+            <app-recursive2 
+                [data]="dataInstance.content" 
+                [taskManager]="taskManager" 
+                [currentLocation]="currentLocation"
+            ></app-recursive2>
+        </div>
+    </div>
+
+
+    <div *ngIf="dataInstance.type=='bulletPoint'" style="width: 100%">
+        <div class="bullet">
+            <div style="display: flex" >
+                <div contenteditable="false">
+                    <div *ngIf="level % 3 == 1" class="circle"></div>
+                    <div *ngIf="level % 3 == 2" class="white-circle"></div>
+                    <div *ngIf="level % 3 == 0" class="square"></div>
+                </div>
+                <div 
+                    class="font universal" 
+                    id="parent"
+                    tabindex="0"
+                    (focus)="focus($event)"
+                    (paste)="paste($event)"
+                    [innerHTML]="(focused != null || dataInstance.value!='<br>' ? dataInstance.value : 'Type Something') | safeHtml"
+                    [ngStyle]="{'color': focused != null || dataInstance.value!='<br>' ? 'inherit' : 'rgb(220, 220, 220)'}"
+                ></div>
+            </div>
+        
+            <div style="margin-left: 12px;">
+                <app-recursive2
+                    [data]="dataInstance.content" 
+                    [taskManager]="taskManager" 
+                    [currentLocation]="currentLocation">
+                </app-recursive2>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="dataInstance.type=='numberedPoint'" style="width: 100%">
+        <div style="display: flex" class="font">
+            <div style="text-align: center; width: 25px; margin-left: -5px; margin-right: -1px;" contenteditable="false">{{ index }}.</div>
+            <div 
+                class="universal" 
+                id="parent"
+                tabindex="0"
+                (focus)="focus($event)"
+                (paste)="paste($event)"
+                [innerHTML]="(focused != null || dataInstance.value!='<br>' ? dataInstance.value : 'Type Something') | safeHtml"
+                [ngStyle]="{'color': focused != null || dataInstance.value!='<br>' ? 'inherit' : 'rgb(220, 220, 220)'}"
+            ></div>
+        </div>
+    
+        <div style="margin-left: 12px;">
+            <app-recursive2
+                [data]="dataInstance.content" 
+                [taskManager]="taskManager" 
+                [currentLocation]="currentLocation">
+            </app-recursive2>
+        </div>
+    </div>
+
+    <div *ngIf="dataInstance.type=='toggle'" style="width: 100%">
+        <div class="toggle-container">
+            <div style="display: flex">
+                <div class="caret" 
+                    contenteditable="false"
+                    (click)="open = !open" 
+                    [ngStyle]="{'rotate': (open ? 90 : 0) + 'deg'}"
+                >▶</div>
+                
+                <div 
+                    class="toggle universal" 
+                    id="parent"
+                    tabindex="0"
+                    (focus)="focus($event)"
+                    (paste)="paste($event)"
+                    [innerHTML]="(focused != null || dataInstance.value!='<br>' ? dataInstance.value : 'Type Something') | safeHtml"
+                    [ngStyle]="{'color': focused != null || dataInstance.value!='<br>' ? 'inherit' : 'rgb(220, 220, 220)'}"
+                ></div>
+            </div>
+        
+            <div style="margin-left: 12px;" *ngIf="open">
+                <app-recursive2 
+                    [data]="dataInstance.content" 
+                    [taskManager]="taskManager" 
+                    [currentLocation]="currentLocation"
+                ></app-recursive2>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="dataInstance.type=='toDoList'" style="width: 100%">
+        <div style="display: flex">
+            <div contenteditable="false" style="height: 16px;">
+                <input type="checkbox" class="checkbox" [checked]="dataInstance.extraData" (click)="toDoListChange()">
+                <div *ngIf="dataInstance.extraData" class="tick" (click)="toDoListChange()"></div>
+            </div>
+            <div 
+                class="text universal" 
+                id="parent"
+                tabindex="0"
+                [ngStyle]="{'text-decoration': dataInstance.extraData ? 'line-through' : 'inherit',
+                'color': focused != null || dataInstance.value!='<br>' ? dataInstance.extraData ? '#7D7C78' : 'inherit' : 'rgb(220, 220, 220)'}"
+                (focus)="focus($event)"
+                (paste)="paste($event)"
+                [innerHTML]="(focused != null || dataInstance.value!='<br>' ? dataInstance.value : 'Type Something') | safeHtml"
+            ></div>
+        </div>
+        <div style="margin-left: 12px;">
+            <app-recursive2 
+                [data]="dataInstance.content" 
+                [taskManager]="taskManager" 
+                [currentLocation]="currentLocation"
+            ></app-recursive2>
+        </div>
+    </div>
+
+    
+    <div *ngIf="dataInstance.type=='image'" style="width: 100%">
+        <div contenteditable="false"style="display: flex; align-items: center;" class="image-container">
+            <img src="{{dataInstance.value}}" [ngStyle]="{'width': dataInstance.extraData + 'px'}">
+            <div class="image-slider" (mousedown)="image($event)"></div>
+        </div>
+    </div>
+
+    <!-- <div contenteditable="false"style="width: 100%"> -->
+        <div contenteditable="false" *ngIf="dataInstance.type=='divider'" style="width: 100%" class="divider universal"></div>
+    <!-- </div> -->
+
+    <div contenteditable="false" style="height: 24px;">
+        <mat-icon class="delete-icon" 
+            
+            *ngIf="taskManager.selectedComponent.toString()==currentLocation.toString()"
+            (mousedown)="removeContentAtLocation(currentLocation)"
+        >
+            delete
+        </mat-icon>
+    </div>
+</div>

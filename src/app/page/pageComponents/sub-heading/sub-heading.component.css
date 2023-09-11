@@ -1,0 +1,9 @@
+.sub-heading {
+    font-weight: 600;
+    color: inherit;
+
+    letter-spacing: 0.8px;
+    border: 0px;
+    outline: none;
+    word-wrap: break-word
+}

@@ -1,0 +1,10 @@
+.text {
+    color: inherit;
+    font-size: inherit;
+    letter-spacing: inherit;
+
+    margin-top: 5px;
+    border: 0px;
+    outline: none;
+}
+

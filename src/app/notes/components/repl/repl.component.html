@@ -1,0 +1,33 @@
+<div class="outer-container">
+    <div class="container">
+        <div class="button-container">
+            <div class="button run-button" (click)="outputShow(true)"><div>▶</div></div>
+        </div>
+
+        <div 
+            name="editor"
+            ngDefaultControl
+            class="editor"
+            [id]="'editor-' + uid"
+            [(ngModel)]="note.value"
+        ></div>
+        <!-- <div class="editor" id="editor"></div> -->
+    </div>
+
+    <div 
+        class="output container"
+        [ngStyle]="showOutput ? {} : {'display': 'none'}"
+    >
+        <div class="button-container remove-button-container">
+            <div class="button remove-button" (click)="outputShow(false)">
+                <mat-icon class="close-icon">close</mat-icon>
+            </div>
+        </div>    
+
+        <div [id]="'imports-' + uid" hidden></div>
+        <div [id]="'imports-state-' + uid" hidden>Loading</div>
+        <div class="out" [id]="'out-' + uid"></div>  
+    </div>
+</div>
+        
+

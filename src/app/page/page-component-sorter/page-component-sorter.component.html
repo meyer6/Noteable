@@ -1,0 +1,62 @@
+<div *ngIf="data.type=='heading'">
+    <div 
+        class="heading" 
+        data-text="Untitled" 
+        contenteditable="true"
+    >
+        {{ data.value }}
+    </div>
+</div>
+
+
+<div *ngIf="data.type=='subHeading'">
+    <div style="width: 100%;" [ngStyle]="{'height': ((4 - data.content) * 11).toString() + 'px'}"></div>
+    <div style="display: flex">
+
+        <div 
+            class="sub-heading" 
+            data-text='Untitled'
+            contenteditable="true"
+            [ngStyle]="{'font-size': ((3 - data.content) * 3 + 17).toString() + 'px'}"
+        >
+            {{ data.value }}
+        </div>
+
+    </div>
+</div>
+
+
+<div *ngIf="data.type=='text'">
+    <div 
+        class="text" 
+        data-text="Type Something" 
+        contenteditable="true"
+    >
+        {{ data.value }}
+    </div>
+</div>
+
+
+<div *ngIf="data.type=='bulletPoint'">
+    <div class="bullet">
+        <div style="display: flex">
+            <div class="circle"></div>
+            <div 
+                class="bullet-point" 
+                data-text="Type Something" 
+                contenteditable="true"
+            >
+                {{ data.value }}
+            </div>
+        </div>
+    
+        <div style="margin-left: -10px;">
+            <app-recursive [data]="data.content" [taskManager]="taskManager" ></app-recursive>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="data.type=='divider'">
+    <div class="divider"></div>
+</div>

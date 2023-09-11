@@ -1,0 +1,107 @@
+<div class="background">
+    <mat-card class="center-screen card">
+        <mat-card-content>
+            <form>
+                <mat-form-field class="input-box">
+                    <mat-label>Email</mat-label>
+                    <input 
+                        matInput [formControl]="user.email" 
+                        type="email" 
+                        placeholder="Ex. example@gmail.com"
+                    >
+
+                    <mat-error *ngIf="user.email.hasError('email') && !user.email.hasError('required')">
+                        Please enter a valid email address
+                    </mat-error>
+
+                    <mat-error *ngIf="user.email.hasError('required')">
+                        Email is required
+                    </mat-error>  
+                </mat-form-field>
+
+                <br>
+
+                <mat-form-field class="input-box">
+                    <mat-label>Enter your password</mat-label>
+                    <input 
+                        matInput [formControl]="user.password" 
+                        [type]="showPassword ? 'password' : 'text'"
+                    >
+
+                    <mat-error *ngIf="user.password.hasError('required')">
+                        Password is required
+                    </mat-error>
+
+                    <button 
+                        mat-icon-button 
+                        matSuffix                         
+                        class = "show-password-button"
+                        type="button"
+                        (click)="showPassword = !showPassword" 
+                        [attr.aria-pressed]="showPassword"
+                    >
+                        <mat-icon>{{showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <mat-error *ngIf="accountService.errorMessage == 'emailInUse'">
+                    Email already exists
+                </mat-error>
+                <mat-error *ngIf="accountService.errorMessage == 'weakPassword'">
+                    Weak Password
+                </mat-error>
+
+                <br>
+                <div *ngIf="authenticationType=='createAccount'">
+                    <button 
+                        mat-raised-button 
+                        class="login-button"
+                        color="primary"
+                        type="button"
+                        (click)="accountService.signUp(user.email.value, user.password.value)"
+                    >
+                        <strong>Create account</strong>
+                    </button>
+
+                    <div class="separator">or</div>
+
+                    <button mat-button class="google-button"
+                        type="button"
+                        (click)="accountService.googleAuth()"
+                    >
+                        <img class="google-image"
+                            src="https://raw.githubusercontent.com/fireflysemantics/logo/master/Google.svg"
+                        /> 
+                        <div class="google-text">Continue With Google</div>
+                    </button><br>
+                    <a routerLink="" (click)="authenticationType='signIn'; accountService.errorMessage=''">Sign In</a>
+                </div>
+
+                <div *ngIf="authenticationType=='signIn'">
+                    <button 
+                        mat-raised-button 
+                        class="login-button"
+                        color="primary"
+                        type="button"
+                        (click)="accountService.signIn(user.email.value, user.password.value)"
+                    >
+                        <strong>Sign In</strong>
+                    </button>
+
+                    <div class="separator">or</div>
+
+                    <button mat-button class="google-button"
+                        type="button"
+                        (click)="accountService.googleAuth()"
+                    >
+                        <img class="google-image"
+                            src="https://raw.githubusercontent.com/fireflysemantics/logo/master/Google.svg"
+                        /> 
+                        <div class="google-text">Continue With Google</div>
+                    </button><br>
+                    <a routerLink="" (click)="authenticationType='createAccount'; accountService.errorMessage=''">Create Account</a>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
