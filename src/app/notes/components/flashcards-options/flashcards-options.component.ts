@@ -13,8 +13,8 @@ export class FlashcardsOptionsComponent {
     flashcardsOptionOpen: boolean = false
     
     constructor(
-        public navigatorService: NavigatorService, 
-        public notesService: NotesService,
+        private navigatorService: NavigatorService, 
+        private notesService: NotesService,
         private flashcardDataService: FlashcardDataService,
     ){}
 
@@ -31,21 +31,20 @@ export class FlashcardsOptionsComponent {
     }
 
     flashcardFullReview(){
-        const flashcards = this.notesService.notes.filter((note: noteInstance) => {
+        const flashcards = this.notesService.notes.value.filter((note: noteInstance) => {
             return note.type == 'toggle' || note.value.includes('cloze')
         })
         this.navigatorService.moveToFlashcards(flashcards)
     }
 
     flashcardmartReview(threshold: number){
-        let flashcards = this.notesService.notes.filter((note: noteInstance) => {
+        let flashcards = this.notesService.notes.value.filter((note: noteInstance) => {
             if(note.type != 'toggle' && !note.value.includes('cloze')){
                 return false
             }
 
             return this.flashcardDataService.getFinalConfidence(note) > threshold
         })
-
         this.navigatorService.moveToFlashcards(flashcards)
     }
 }

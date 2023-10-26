@@ -1,42 +1,44 @@
-<app-options-bar></app-options-bar>
+<app-options-bar *ngIf="notesService.interaction.editingStatus"></app-options-bar>
 
 <div class="container">
-    <app-breadcrumb [style.z-index]="'10'"></app-breadcrumb>
+    <app-breadcrumb *ngIf="notesSetup.breadcrumb" [style.z-index]="'10'"></app-breadcrumb>
 
-    <app-sharing [style.z-index]="'10'"></app-sharing>
+    <app-sharing *ngIf="notesSetup.sharing" [style.z-index]="'10'"></app-sharing>
 
 
     <div 
-        class="margin"
+        class="margin" *ngIf="notesSetup.margin"
         (mouseenter)="setHoverComponent()"
     ></div>
 
-    <div class="notes">
-        <div class="top-margin"></div>
+    <div class="notes"
+        [style.width]="notesSetup.margin ? 'min(calc(100% - 200px), 730px)' : '100%'"
+    >
+        <div class="top-margin" *ngIf="notesSetup.margin"></div>
         <app-notes-recurse 
-            [notes]="notesService.notes" 
+            [notes]="notesService.notes.value" 
         ></app-notes-recurse>
-        <div class="bottom-margin"></div>
+        <div class="bottom-margin" *ngIf="notesSetup.margin"></div>
     </div>
 
     <div 
-        class="margin"
+        class="margin" *ngIf="notesSetup.margin"
         (mouseenter)="setHoverComponent()"
     ></div>
 
 
-    <app-flashcards-options></app-flashcards-options>
+    <app-flashcards-options *ngIf="notesSetup.flashcards"></app-flashcards-options>
 </div>
 
 <div 
     class="drag-preview"
-    *ngIf="notesInteractionService.dragging"
-    [style.left.px]="notesInteractionService.mouseCoords[0] + 15"
-    [style.top.px]="notesInteractionService.mouseCoords[1] - 5"
+    *ngIf="notesService.interaction.dragging"
+    [style.left.px]="notesService.interaction.mouseCoords[0] + 15"
+    [style.top.px]="notesService.interaction.mouseCoords[1] - 5"
 >
     <app-render-note
-        [note]="notesInteractionService.componentBeingDragged"
-        [notePath]="notesInteractionService.startComponentPath"
+        [note]="notesService.interaction.componentBeingDragged"
+        [notePath]="notesService.interaction.startComponentPath"
     ></app-render-note>
 </div>
 

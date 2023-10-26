@@ -1,0 +1,17 @@
+.title-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    transform: translateY(-10px);
+}
+
+.title {
+    width: fit-content;
+    padding: 50px 50px 50px 50px;
+    color: #37352f;
+    font-size: 50px;
+    font-weight: 700;
+
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 2px 4px;
+}

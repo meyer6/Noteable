@@ -53,7 +53,7 @@
 
     overflow-wrap: break-word;
     word-break: break-word;
-    line-break: after-white-space
+    line-break: after-white-space;
 }
 
 [contenteditable=true]:empty:before{
@@ -120,6 +120,7 @@
 }
 
 .bullet {
+    margin-top: 2px;
     width: 6px;
     height: 6px;
     background: #37352f;

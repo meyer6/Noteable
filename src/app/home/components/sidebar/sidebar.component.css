@@ -28,6 +28,7 @@
     border-radius: 4px;
     width: 30px;
     height: 30px;
+    margin-bottom: 0 !important;
 }
 
 .header-text{
@@ -95,19 +96,19 @@
     cursor: pointer;
     user-select: none;
 
+    transform: rotate(90deg);
+
     transition: rotate 0.3s;
 }
 
 
 .notes-container {
-    width: 93%; 
-    margin: auto; 
-}
-.notes {
-    height: 25px; 
-    width: 100%; 
-    border: 0px;
-    border-radius: 5px; 
+    width: calc(93% / 0.8); 
+    margin-left: -10px; 
+
+    transform: scale(0.8);
+
+    /* text-overflow: ellipsis !important; */
 }
 
 .drag-bar-container {

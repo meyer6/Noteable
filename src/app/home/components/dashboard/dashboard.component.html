@@ -1,1 +1,23 @@
-<p>dashboard works!</p>
+<div class="title-container">
+    <div class="title">
+        Dashboard
+    </div>
+</div>
+
+<div class="container">
+    <app-notes
+        class="notes"
+        [style.width]="'calc(50% + '+ dividerDiff + 'px)'"
+        [notesSetup]="{notes: myNotes}"
+    ></app-notes>
+
+    <div class="divider-container" (mousedown)="moveDivider($event)">
+        <div class="divider"></div>
+    </div>
+
+    <app-notes 
+        class="notes"
+        [style.width]="'calc(50% + '+ - dividerDiff + 'px)'"
+        [notesSetup]="{notes: sharedNotes}"
+    ></app-notes>
+</div>

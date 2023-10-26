@@ -1,5 +1,5 @@
 <div 
-    *ngIf="notesInteractionService.selectedComponentPath.toString() == notePath.toString()"
+    *ngIf="notesService.interaction.selectedComponentPath.toString() == notePath.toString()"
     class="delete-icon-container"
     (mousedown)="delete()"
 >
@@ -14,15 +14,15 @@
 
 <div 
     class="container"
-    [ngStyle]="notesInteractionService.selectedComponentPath.toString() == notePath.toString() ? {
+    [ngStyle]="notesService.interaction.selectedComponentPath.toString() == notePath.toString() ? {
         background: '#E0EDFB'
     } : {}"   
-    (click)="notesInteractionService.focusedComponentPath = notePath; $event.stopPropagation()"
+    (click)="notesService.interaction.setFocusedComponentPath(notePath); $event.stopPropagation()"
 >
     <div *ngIf="note.type == 'title'">
         <div 
             class="title universal" 
-            [contentEditable]="true"
+            [contentEditable]="notesService.interaction.editingStatus"
             placeholder="Type something"
             
             [innerHTML]="noteValue"
@@ -44,7 +44,7 @@
             class="subheading universal" 
             [style.font-size.px]="[30, 24, 20][note.subHeadingType - 1]"
             [style.line-height.px]="[39, 31, 26][note.subHeadingType - 1]"
-            [contentEditable]="true"
+            [contentEditable]="notesService.interaction.editingStatus"
             placeholder="Type something"
             
             [innerHTML]="noteValue"
@@ -64,7 +64,7 @@
     <div *ngIf="note.type == 'text'">
         <div 
             class="text universal" 
-            [contentEditable]="true"
+            [contentEditable]="notesService.interaction.editingStatus"
             placeholder="Type something"
             
             [innerHTML]="noteValue"
@@ -80,7 +80,10 @@
         </div>
     </div>
 
-    <div *ngIf="note.type == 'page'" class="page-container">
+    <div 
+        *ngIf="note.type == 'page' && (note.content == undefined || note.content.length == 0)" 
+        class="page-container"
+    >
         <div class="left-content-container">
             <div class="left-content">    
                 <img class="page-img" src="assets/page.png">
@@ -115,7 +118,7 @@
 
             <div 
                 class="text universal" 
-                [contentEditable]="true"
+                [contentEditable]="notesService.interaction.editingStatus"
                 placeholder="Type something"
                 
                 [innerHTML]="noteValue"
@@ -141,7 +144,7 @@
 
             <div 
                 class="text universal" 
-                [contentEditable]="true"
+                [contentEditable]="notesService.interaction.editingStatus"
                 placeholder="Type something"
                 
                 [innerHTML]="noteValue"
@@ -179,7 +182,7 @@
 
             <div 
                 class="text universal to-do-list-text" 
-                [contentEditable]="true"
+                [contentEditable]="notesService.interaction.editingStatus"
                 placeholder="Type something"
                 [style.color]="note.open ? 'rgba(55, 53, 47, 0.65)' : 'inherit'"
                 [style.text-decoration-line]="note.open ? 'line-through' : 'inherit'"
@@ -209,7 +212,7 @@
 
             <div 
                 class="text universal" 
-                [contentEditable]="true"
+                [contentEditable]="notesService.interaction.editingStatus"
                 placeholder="Type something"
                 
                 [innerHTML]="noteValue"
@@ -230,7 +233,7 @@
     </div>
 
 
-    <div *ngIf="note.type == 'pageToggle'">
+    <div *ngIf="note.type == 'page' && (note.content != undefined && note.content.length != 0)" >
         <div class="left-content-container">
             <div class="left-content">
                 <div class="caret" 

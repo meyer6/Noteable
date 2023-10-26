@@ -73,14 +73,14 @@ export class AccountService {
             email: user.email,
             photoURL: user.photoURL == undefined ? 'assets/pfp.png' : user.photoURL,
         }).then(() => {
-            const noteKey = push(child(ref(this.db), `users/${user.uid}/notes`)).key
-            const updates: { [key: string]: any } = {}
+            const noteId = push(child(ref(this.db), 'notes')).key
 
-            updates[`notes/${noteKey}`] =  {
-                data: [{type: 'title', value: 'Start your first note'}],
-                owner: user.uid
-            }
-            updates[`users/${user.uid}/notes`] =  [noteKey]
+            const updates: { [key: string]: any } = {}
+            updates[`notes/${noteId}`] = [{type: 'title', value: 'Your first Noteable!!!'}, {type: 'text', value: 'Start Typing'}]
+            updates[`users-notes/${user.uid}/${noteId}`] = "Owner"
+            updates[`notes-users/${noteId}/${user.uid}`] = true
+
+            // updates[`users/${user.uid}/notes`] =  [noteKey]
             update(ref(this.db), updates).then(() => {
                 this.saveData(user);
             })

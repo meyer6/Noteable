@@ -1,0 +1,47 @@
+.title-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    transform: translateY(-10px);
+}
+
+.title {
+    width: fit-content;
+    padding: 50px 50px 50px 50px;
+    color: #37352f;
+    font-size: 50px;
+    font-weight: 700;
+
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 2px 4px;
+}
+
+.container {
+    height: 100%;
+    overflow-y: scroll;
+    display: flex;
+}
+
+.divider-container {
+    margin: -3px;
+    padding: 3px;
+    cursor: col-resize;
+    user-select: none;
+}
+.divider {
+    width: 2px;
+    margin: 0 0.5px 0 0.5px;
+
+    height: 100%;
+    background: #F5F5F4;
+    transition: background 0.3s;
+}
+.divider-container:hover .divider{
+    width: 3px;
+    margin: 0;
+    background: #bbd8f3;
+}
+
+.notes {
+    padding: 50px 3% 0 7%;
+}

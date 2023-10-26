@@ -1,10 +1,8 @@
 import { NavigatorService } from 'src/app/home/services/navigator.service';
 import { RandomNoteFunctionsService } from './../../services/random-note-functions.service';
-import { NotesInteractionService } from '../../services/notesInteraction.service';
 import { NotesService } from '../../services/notes.service';
 import { Component, Input } from '@angular/core';
 import { noteInstance } from '../../interfaces/noteTemplate';
-import { NotesCrudService } from '../../services/notes-crud.service';
 import { FlashcardDataService } from '../../services/flashcard-data.service';
 
 @Component({
@@ -26,10 +24,8 @@ export class RenderNoteComponent {
 	pageTitle?: string = 'Loading...';
 
     constructor(
-		public navigatorService: NavigatorService,
-		public notesInteractionService: NotesInteractionService,
 		public notesService: NotesService,
-		private notesCrudService: NotesCrudService, 
+		public navigatorService: NavigatorService,
 		private randomNoteFunctions: RandomNoteFunctionsService,
 		private flashcardDataService: FlashcardDataService,
 	){}
@@ -40,7 +36,7 @@ export class RenderNoteComponent {
 		if(this.note.type == 'numberedPoint'){
 			this.getNumberedListValue()
 		}else if(this.note.type == 'bulletPoint'){
-			this.indentLevel = this.notesCrudService.getListIndentLevel(this.notePath, 'bulletPoint')
+			this.indentLevel = this.notesService.notes.getListIndent(this.notePath, 'bulletPoint')
 		}
 		else if(this.note.type == 'page' || this.note.type == 'pageToggle'){
 			this.notesService.getTitleFromPageId(this.note.value)
@@ -122,12 +118,12 @@ export class RenderNoteComponent {
 	}
 
 	delete(){
-		this.notesCrudService.deleteNoteAtPath(this.notePath)
+		this.notesService.notes.deleteNoteAtPath(this.notePath)
 	}
 
 	getNumberedListValue(){
-		const index = this.notesCrudService.getListNumber(this.notePath, 'numberedPoint')
-		const indentLevel = this.notesCrudService.getListIndentLevel(this.notePath, 'numberedPoint')
+		const index = this.notesService.notes.getListNumber(this.notePath, 'numberedPoint')
+		const indentLevel = this.notesService.notes.getListIndent(this.notePath, 'numberedPoint')
 
 		if(indentLevel == 0){
 			this.numberedListValue = this.randomNoteFunctions.convertNumToChar(index);
@@ -169,7 +165,7 @@ export class RenderNoteComponent {
 
 				reader.onload = (event) => {
 					let url: any = event.target?.result
-					this.notesCrudService.insertNoteAtPath(this.notePath, {
+					this.notesService.notes.insertNoteAtPath(this.notePath, {
 						type: 'image',
 						value: url,
 						width: 400,

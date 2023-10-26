@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { noteInstance } from '../../interfaces/noteTemplate';
-import { NotesInteractionService } from '../../services/notesInteraction.service';
+import { NotesService } from '../../services/notes.service';
 
 @Component({
     selector: 'app-notes-recurse',
@@ -11,23 +11,23 @@ export class NotesRecurseComponent {
     @Input() notes: noteInstance[];
     @Input() notePath: number[] = []
 
-    constructor(private notesInteractionService: NotesInteractionService){}
+    constructor(private notesService: NotesService){}
 
     checkPlaceholderState(index: number){
-        const dragging = this.notesInteractionService.dragging
-        const hoveredOver = this.notePath.concat([index]).toString() == this.notesInteractionService.currentHoveredComponentPath.toString()
+        const dragging = this.notesService.interaction.dragging
+        const hoveredOver = this.notePath.concat([index]).toString() == this.notesService.interaction.hoveredComponentPath.toString()
         return dragging && hoveredOver
     }
     
     startDragging(index: number, event: MouseEvent){
-        this.notesInteractionService.startDragging(this.notePath.concat([index]), event)
+        this.notesService.interaction.startDragging(this.notePath.concat([index]), event)
     }
 
     setHoverComponent(index: number){
-        this.notesInteractionService.setCurrentHoveredComponent(this.notePath.concat([index]))
+        this.notesService.interaction.setHoveredComponentPath(this.notePath.concat([index]))
     }
 
     selectComponent(index: number){
-        this.notesInteractionService.selectComponent(this.notePath.concat([index]))
+        this.notesService.interaction.selectComponent(this.notePath.concat([index]))
     }
 }

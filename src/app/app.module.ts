@@ -66,6 +66,7 @@ import { BreadcrumbComponent } from './notes/components/breadcrumb/breadcrumb.co
 import { DashboardComponent } from './home/components/dashboard/dashboard.component';
 import { SettingsComponent } from './home/components/settings/settings.component';
 import { SafeUrlPipe } from './notes/pipes/safe-url.pipe';
+import { NotesInteractionService } from './notes/oldStuff/notesInteraction.service';
 
 @NgModule({
     declarations: [
@@ -141,9 +142,9 @@ import { SafeUrlPipe } from './notes/pipes/safe-url.pipe';
         ]),
     ],
     providers: [
-        NotesService,
-        NavigatorService,
-        FlashcardsService
+        // NotesService,
+        // NotesInteractionService,
+        // FlashcardsService
     ],
     bootstrap: [AppComponent],
     schemas: [

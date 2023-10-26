@@ -1,5 +1,5 @@
 <div class="share-button-container">
-    <div class="centre share-button" (click)="sharingOpen = !sharingOpen">
+    <div class="centre share-button" (click)="sharingOpen = !sharingOpen; getUsers()">
         <img class="share-icon" src="assets/share.png">
     </div>    
 </div>
@@ -7,38 +7,50 @@
     class="share-container" 
     [style.transform]="sharingOpen ? 'translateX(-30px)' : 'translateX(100%)'"
 >
-    <div class="input-container">
-        <input placeholder="Email" class="email-input">
-        <div class="centre email-button">Invite</div>
+    <div 
+        class="input-container" 
+        *ngIf="['Editor', 'Owner'].includes(notesService.sharing.permissionLevel)"
+    >
+        <input 
+            placeholder="Email" 
+            class="email-input" 
+            #emailInput
+        >
+
+        <div 
+            class="centre email-button" 
+            (click)="addUser(emailInput.value)"
+        >Invite</div>
     </div>
-    <div class="input-container">
-        <img class="user-icon" src="https://openseauserdata.com/files/3085b3fc65f00b28699b43efb4434eec.png">
-        <div class="user-email">17loukam@students.watfordboys.org</div>
-        <div class="user-permission">
-            <mat-icon class="move left">keyboard_arrow_left</mat-icon>
-            <div class="permission-level">Owner</div>
-            <mat-icon class="move right">keyboard_arrow_right</mat-icon>
-        </div>
-        <div class="user-remove"><mat-icon>close</mat-icon></div>
-    </div> 
-    <div class="input-container">
-        <img class="user-icon"src="https://openseauserdata.com/files/3085b3fc65f00b28699b43efb4434eec.png">
-        <div class="user-email">17nairn@students.watfordboys.org</div>
-        <div class="centre user-permission">
-            <mat-icon class="move left">keyboard_arrow_left</mat-icon>
-            <div class="permission-level">Editor</div>
-            <mat-icon class="move right">keyboard_arrow_right</mat-icon>
-        </div>
-        <div class="user-remove"><mat-icon>close</mat-icon></div>
-    </div> 
-    <div class="input-container">
-        <img class="user-icon"src="https://openseauserdata.com/files/3085b3fc65f00b28699b43efb4434eec.png">
-        <div class="user-email">meyerlouka6@gmail.com</div>
-        <div class="user-permission">
-            <mat-icon class="move left">keyboard_arrow_left</mat-icon>
-            <div class="permission-level">Viewer</div>
-            <mat-icon class="move right">keyboard_arrow_right</mat-icon>
-        </div>
-        <div class="user-remove"><mat-icon>close</mat-icon></div>
-    </div> 
+
+    <div *ngFor="let userData of usersData, let i = index">
+        <div 
+            class="input-container" 
+            [style.margin-bottom]="i != usersData.length - 1 ? '7px' : 0"
+        >
+            <img class="user-icon" [src]="userData.photoURL" referrerpolicy="no-referrer">
+            <div class="user-email">{{ userData.email }}</div>
+            <div class="user-permission">
+                <mat-icon 
+                    class="move" 
+                    (click)="editUserLeft(i)"
+                >keyboard_arrow_left</mat-icon>
+
+                <div class="permission-level">{{ userData.permission }}</div>
+                
+                <mat-icon 
+                    class="move"
+                    (click)="editUserRight(i)"
+                >keyboard_arrow_right</mat-icon>
+            </div>
+
+
+            <div 
+                class="user-remove" 
+                (click)="removeUser(i)"
+            >
+                <mat-icon>close</mat-icon>
+            </div>
+        </div> 
+    </div>
 </div>

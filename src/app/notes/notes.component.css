@@ -5,6 +5,7 @@
     
     height: 100%;
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .margin {
@@ -13,7 +14,7 @@
 }
 
 .notes {
-    width: min(calc(100% - 200px), 730px);
+    /* width: min(calc(100% - 200px), 730px); */
     height: 100%;
 }
 

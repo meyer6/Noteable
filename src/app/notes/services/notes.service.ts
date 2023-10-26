@@ -1,16 +1,19 @@
+import { NavigatorService } from './../../home/services/navigator.service';
 import { Injectable } from '@angular/core';
-import { Database, getDatabase, off, onValue, ref, update } from 'firebase/database';
+import { Database, child, getDatabase, off, onValue, push, ref, update } from 'firebase/database';
 import { noteInstance } from '../interfaces/noteTemplate';
 import { Router } from '@angular/router';
-import { NavigatorService } from '../../home/services/navigator.service';
+import { Notes } from '../interfaces/notes';
+import { Interaction } from '../interfaces/interaction';
+import { Sharing } from '../interfaces/sharing';
+import { ListenEvent } from '@angular/fire/compat/database';
+import { Unsubscribe } from 'firebase/app-check';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class NotesService {
     db: Database = getDatabase()
     
-    notes: noteInstance[] = 
+    notes2: noteInstance[] = 
     [   
         {
             type: "title",
@@ -198,82 +201,138 @@ export class NotesService {
                 }
             ]     
         },
-        {
-            type: 'repl',
-            value: `import numpy as np
-a = np.array([1, 2]) * 2
-print(a)
-print('hello world')`,
-            lastOutput: `<div _ngcontent-ynv-c44="" id="out-llu18tcfkhav7ao252d"><py-script output="out-llu18tcfkhav7ao252d" id="py-a399ba2d-8283-d360-d7d0-da5ee01ce056" output-mode="append"><div class="parentBox flex flex-col mx-8"></div></py-script><div id="out-llu18tcfkhav7ao252d-2">[2 4]</div><div id="out-llu18tcfkhav7ao252d-3">
-                </div><div id="out-llu18tcfkhav7ao252d-4">hello world</div><div id="out-llu18tcfkhav7ao252d-5">
-                </div></div>`,
-            content: []
-        },
-        {
-            type: 'repl',
-            value: `import numpy as np
-a = np.array([1, 2]) * 2
-print(a)
-print('hello world')`,
-            content: [],
-        }
+//         {
+//             type: 'repl',
+//             value: `import numpy as np
+// a = np.array([1, 2]) * 2
+// print(a)
+// print('hello world')`,
+//             lastOutput: `<div _ngcontent-ynv-c44="" id="out-llu18tcfkhav7ao252d"><py-script output="out-llu18tcfkhav7ao252d" id="py-a399ba2d-8283-d360-d7d0-da5ee01ce056" output-mode="append"><div class="parentBox flex flex-col mx-8"></div></py-script><div id="out-llu18tcfkhav7ao252d-2">[2 4]</div><div id="out-llu18tcfkhav7ao252d-3">
+//                 </div><div id="out-llu18tcfkhav7ao252d-4">hello world</div><div id="out-llu18tcfkhav7ao252d-5">
+//                 </div></div>`,
+//             content: []
+//         },
+//         {
+//             type: 'repl',
+//             value: `import numpy as np
+// a = np.array([1, 2]) * 2
+// print(a)
+// print('hello world')`,
+//             content: [],
+//         }
     ];
+
+    notes: Notes;
+    interaction: Interaction;
+    sharing: Sharing;
     
-    listeners: string[] = []
-    notesIdPath: string[]
-    notesId: string
+    notesIdPath: string[] = ['']
+    notesId: string = ''
 
-    constructor(
-        private router: Router, 
-        private navigatorService: NavigatorService
-    ) {}
+    getNotesUnsubscribe: Unsubscribe | undefined = undefined;
 
-    startUp(){
-        if (arguments.length === 1 && Array.isArray(arguments[0])) {
-            this.removeListeners()
-            this.notes = arguments[0]
-            this.notesIdPath = ['']
-            this.notesId = ''
-        }else{
+    constructor(private router: Router, private navigatorService: NavigatorService) {
+        // if (arguments.length === 1) {
+        //     this.notes = new Notes(arguments[0])
+        // }else{
+        //     this.notesIdPath = this.router.url.replace('/Notes/', '').split('/');
+        //     this.notesId = this.notesIdPath[this.notesIdPath.length - 1]
+        //     this.getNotes()
+        //     this.updateNotes()
+        // }
+    }
+
+    setup(notes: noteInstance[] | undefined, editingStatus?: boolean){
+        this.notes = new Notes([])
+        this.interaction = new Interaction(this.notes, editingStatus)
+
+        if (notes == undefined){
             this.notesIdPath = this.router.url.replace('/Notes/', '').split('/');
             this.notesId = this.notesIdPath[this.notesIdPath.length - 1]
-            this.removeListeners()
+            
+            this.sharing = new Sharing()
+
             this.getNotes()
-            this.updateNotes()
+            this.updateNotes() 
+        }else{
+            this.notes.setNotes(notes)
         }
     }
 
-    removeListeners(){
-        for(let i = 0; i < this.listeners.length; i++){
-            off(ref(this.db, this.listeners[i]))
-        }
+    getUserId(){
+        return JSON.parse(localStorage.getItem('user')!)?.uid
     }
 
 	getNotes(){
-        // onValue(ref(this.db, `notes/${this.notesId}/data`), (notes) => {
-        //     this.notes = notes.val();
-        // });
-        // this.listeners.push(`notes/${this.notesId}/data`)
+        // this.notes.setNotes(this.notes2)
+
+        const userId = this.getUserId()
+
+        const retrieveNotes = (permissionLevel: string) => {
+            if(this.getNotesUnsubscribe != undefined){
+                this.getNotesUnsubscribe()
+            }
+
+            if(permissionLevel == "Editor" || permissionLevel == "Owner") this.interaction.setEditingStatus(true)
+            else this.interaction.setEditingStatus(false)
+
+            if(permissionLevel != 'noAccess'){
+                this.getNotesUnsubscribe = onValue(ref(this.db, `notes/${this.notesId}`), (notes) => {
+                    if(notes.val() != this.notes.value){
+                        this.notes.setNotes(notes.val());
+                    }
+                })
+            }else{
+                this.notes.setNotes([{type: 'title', value: 'You do not have access to this file', content: []}])
+            }
+        }
+        this.sharing.getPermissionLevel(this.notesId, userId, retrieveNotes)
+
+        // this.sharing.getPermissionLevel(this.notesId, userId).then((permissionLevel) => {
+        //     onValue(ref(this.db, `notes/${this.notesId}`), (notes) => {
+        //         if(permissionLevel != 'noAccess'){
+        //             this.notes.setNotes(notes.val());
+        //         }else{
+        //             this.notes.setNotes([{type: 'title', value: 'You do not have access to this file', content: []}])
+        //         }
+        //     });
+        // })
 	}
 
     updateNotes(){
-        // setInterval(() => {
-        //     update(ref(this.db), {
-        //         'notes/-Nd5uHU-H97hrfUZJw28/data': this.notes
-        //     })
-        // }, 2000);            
+        setInterval(() => {
+            let updates: {[key: string]: noteInstance[]} = {}
+                if(this.notes.value.length != 0){
+                    updates[`notes/${this.notesId}/`] = this.notes.value
+                }
+            update(ref(this.db), updates)
+        }, 2000);            
     }
 
     async getTitleFromPageId(pageId: string){
         return new Promise<string>((resolve) => {
-            onValue(ref(this.db, `notes/${pageId}/data`), (notes) => {
+            onValue(ref(this.db, `notes/${pageId}`), (notes) => {
                 if (notes.exists()) {
                     resolve(notes.val()[0].value)
                 }
                 resolve('Page not found')
-            }, {
-                onlyOnce: true
-            });
+            }, {onlyOnce: true});
         })
+    }
+
+    createNewPage(){
+        const noteId = push(child(ref(this.db), 'notes')).key
+        const userId = this.getUserId()
+
+        const updates: { [key: string]: any } = {}
+        updates[`notes/${noteId}`] = [{type: 'title', value: 'Untitled'}, {type: 'text', value: ''}]
+        updates[`users-notes/${userId}/${noteId}`] = "Owner"
+        updates[`notes-users/${noteId}/${userId}`] = true
+
+        update(ref(this.db), updates).then(() => {
+            if(noteId != null) this.navigatorService.moveToChildNotes(noteId)
+        })
+
+        return noteId
     }
 }

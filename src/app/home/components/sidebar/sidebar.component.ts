@@ -1,5 +1,8 @@
+import { noteInstance } from 'src/app/notes/interfaces/noteTemplate';
 import { NavigatorService } from './../../services/navigator.service';
 import { Component } from '@angular/core';
+import { DashboardService } from '../../services/dashboard.service';
+import { UserDetails } from 'src/app/account/interfaces/userInterfaces';
 
 @Component({
     selector: 'app-sidebar',
@@ -7,13 +10,23 @@ import { Component } from '@angular/core';
     styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent {
-	open1: boolean = true;
+    myNotes: noteInstance[] = [];
+	sharedNotes: noteInstance[] = []
+
+    userInfo: UserDetails;
+
+    open1: boolean = true;
 	open2: boolean = true;
 
     width: number = 230;
     dragging: boolean = false;
 
-    constructor(private navigatorService: NavigatorService){}
+    constructor(private navigatorService: NavigatorService, private dashboardService: DashboardService){}
+
+    ngOnInit(){
+		this.dashboardService.getPages(this.myNotes, this.sharedNotes)
+        this.getUserInfo()
+    }
 
     redirectToSettings(){
         this.navigatorService.moveToSettings()
@@ -34,5 +47,9 @@ export class SidebarComponent {
             this.dragging = false
             document.removeEventListener('mousemove', moveFunction)
         }, {once: true})   
+    }
+
+    getUserInfo(){
+        this.userInfo = JSON.parse(localStorage.getItem('user')!)
     }
 }

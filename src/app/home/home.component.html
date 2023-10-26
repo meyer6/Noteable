@@ -2,17 +2,15 @@
     <div class="sidebar-container">
         <app-sidebar></app-sidebar>
     </div>
-    <div *ngIf="navigatorService.pageContent == 'Dashboard'" class="page-container">
-        <app-dashboard></app-dashboard>
-    </div>
-    <div *ngIf="navigatorService.pageContent == 'Notes'" class="page-container">
-        <app-notes></app-notes>
-    </div>
-    <div *ngIf="navigatorService.pageContent == 'Flashcards'" class="page-container">
-        <app-flashcards></app-flashcards>
-    </div>
-    <div *ngIf="navigatorService.pageContent == 'Settings'" class="page-container">
-        <app-settings></app-settings>
+
+    <div class="page-container">
+        <app-dashboard *ngIf="navigatorService.pageContent == 'Dashboard'"></app-dashboard>
+        <app-notes 
+            *ngIf="navigatorService.pageContent == 'Notes'"
+            [notesSetup]="{breadcrumb: true, sharing: true, flashcards: true, margin: true, editing: true}"
+        ></app-notes>
+        <app-flashcards *ngIf="navigatorService.pageContent == 'Flashcards'"></app-flashcards>
+        <app-settings *ngIf="navigatorService.pageContent == 'Settings'"></app-settings>
     </div>
 </div>
 

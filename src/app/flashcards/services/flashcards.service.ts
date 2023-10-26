@@ -7,18 +7,18 @@ import { noteInstance } from '../../notes/interfaces/noteTemplate';
 })
 export class FlashcardsService {
     flashcards: noteInstance[];
-	notesUrl: string
+	lastUrl: string
 	
     constructor(private navigatorService: NavigatorService) { }
 
 	setFlashcards(flashcards: noteInstance[]){
 		this.flashcards = flashcards
 	}
-	setNotesUrl(notesUrl: string){
-		this.notesUrl = notesUrl
+	setLastUrl(lastUrl: string){
+		this.lastUrl = lastUrl
 	}
 
 	backToNotes(){
-		this.navigatorService.moveToNotes(this.notesUrl)
+		this.navigatorService.moveToUrl(this.lastUrl)
 	}
 }

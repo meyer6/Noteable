@@ -1,20 +1,25 @@
+import { noteInstance } from './interfaces/noteTemplate';
+import { notesSetup } from './interfaces/notesSetup';
 import { NotesService } from './services/notes.service';
-import { Component } from '@angular/core';
-import { NotesInteractionService } from './services/notesInteraction.service';
+import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'app-notes',
     templateUrl: './notes.component.html',
-    styleUrls: ['./notes.component.css']
+    styleUrls: ['./notes.component.css'],
+    providers: [NotesService]
 })
 export class NotesComponent {
-    constructor(
-        public notesInteractionService: NotesInteractionService, 
-        public notesService: NotesService
-    ){}
+    @Input() notesSetup: notesSetup = {};
+
+    constructor(public notesService: NotesService){ }
+
+    ngOnInit(){
+        this.notesService.setup(this.notesSetup.notes, this.notesSetup.editing)       
+    }
 
     setHoverComponent(){
-        this.notesInteractionService.setCurrentHoveredComponent([-2])
+        this.notesService.interaction.setHoveredComponentPath([-2])
     }
 }
 
@@ -27,6 +32,7 @@ export class NotesComponent {
 // Ai
 // Maths Equations
 
+// Toggle spacing
 // Image flashcards
 // Page icons
 // Numbered list fix

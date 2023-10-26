@@ -1,16 +1,16 @@
 <div class="container">
     <div 
         class="sidebar"
-    [style.width]="'min(500px, max(' + width.toString() +'px, 150px))'"
+        [style.width]="'min(500px, max(' + width.toString() +'px, 150px))'"
     >
         <div class="header">
             <img 
                 class="profile-image"
                 mat-card-avatar 
-                src="https://lh3.googleusercontent.com/a-/AOh14GjwnQZVnGfpT064XBfMzwmn_N0Q6qgX5wVM6rejvrtl6o_z-30DQoevKClTWHPXJfptCaUfcUAV0FNENeBd724Mj67ZkLF9ozm8uuU-l2hragH364Fr9WS5atJQfipDkhXSKbtNVBseKJkNvjq12WQZexfOPxcO2zpiUak9b0QRqQij-ajs1jrdKLT5vNUNZX6jr9bN8-aT7L8C2Nxu13DYQqWlmwndDQSYn4xtsY80tfFSSlU6mvRai9Va8fPdZSwE0jO15CWney2StFVJB8sHwLjSI5XACtd-5dIc7BQ9dceIrc1cfDX8wRqj9QDx8dWRrtXL0wWcZItn40sq4efmZylV5bVD2gvjkc8NWEORFo2RQRsGvprtSHIDl_WN_Kj_9t2S1J3PdnopeFU_2yNbk5m8wnBIzT7jiLRaSEjAmGSSOvtEng34tOPa1zsJ4buzJoa5yqSpzRaYy7Cx7-0gri4DGO7zDLkb6dYLXDp7evK2p-UCd70A9ZZHzzg3a0Qn38AUoPOvzWUN8piTTmWz29BA-uxZ7lyOPZnSUf1raetC4Jfrkd2r3QW-qHuh9kIZAc1_1KDUEEQtk_ol87o3ko3apIV44xTNQLsqgt3g1MYM2XtAg55_zxMNYsLyWgpmFBqyAf86ltNL3_CxSfvELHEptQxvfrZpLN9ZrpDdpat0uJKvKzq5pfWmFfii_55ZjRcfgUgqRZMoqfZeWZ_k0hYA0uBXAEVwlQfmp3y3dmmXe-aLm2Xof1AOke0BRykX8g=s100"
+                [src]=" userInfo.photoURL"
                 referrerpolicy="no-referrer"
             >
-            <div class="header-text">17loukam@students.watfordboys.org</div>
+            <div class="header-text">{{ userInfo.email }}</div>
         </div>
 
 
@@ -31,7 +31,7 @@
                 <div 
                     class="caret" 
                     (click)="open1 = !open1" 
-                    [style.rotate.deg]="open1 ? 90 : 0"
+                    [style.rotate.deg]="open1 ? 0 : -90"
                 >
                     ▶
                 </div>
@@ -41,8 +41,7 @@
         </div>
 
         <div class="notes-container" *ngIf="open1">
-            <button class="notes"></button>
-            <button class="notes"></button>
+            <app-notes [notesSetup]="{notes: myNotes}"></app-notes>
         </div>
 
         <br>
@@ -52,7 +51,7 @@
                 <div 
                     class="caret" 
                     (click)="open2 = !open2" 
-                    [style.rotate.deg]="open2 ? 90 : 0"
+                    [style.rotate.deg]="open2 ? 0 : -90"
                 >
                     ▶
                 </div>
@@ -62,8 +61,7 @@
         </div>
 
         <div class="notes-container" *ngIf="open2">
-            <button class="notes"></button>
-            <button class="notes"></button>
+            <app-notes [notesSetup]="{notes: sharedNotes}"></app-notes>
         </div>
     </div>
 

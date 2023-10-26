@@ -1,6 +1,5 @@
-import { NotesInteractionService } from '../../services/notesInteraction.service';
 import { Component } from '@angular/core';
-import { NotesCrudService } from '../../services/notes-crud.service';
+import { NotesService } from '../../services/notes.service';
 
 @Component({
     selector: 'app-options-bar',
@@ -18,6 +17,7 @@ export class OptionsBarComponent {
 		["Heading 3", "https://www.notion.so/images/blocks/subsubheader.d0ed0bb3.png", "subHeading", {subHeadingType: 3}],
 		["Separator", ""],
 		["Text", "https://www.notion.so/images/blocks/text/en-US.png", "text"],
+		["Page", "https://www.notion.so/images/blocks/page.83b0bf31.png", "page"],
 		["Cloze", "assets/cloze.png"],
 		["Separator", ""],
 		["Bulleted List", "https://www.notion.so/images/blocks/bulleted-list.0e87e917.png", "bulletPoint"],
@@ -49,7 +49,7 @@ export class OptionsBarComponent {
 		["Red", "#D44C47", "#FDEBEC"]
 	];
 
-	constructor(private notesCrudService: NotesCrudService, private notesInteractionService: NotesInteractionService){}
+	constructor(private notesService: NotesService){}
 
 	styleText(style: string, value: string = ''){
 		document.execCommand(style, false, value)
@@ -62,10 +62,10 @@ export class OptionsBarComponent {
 				document.execCommand('insertHTML', false, '<span class="cloze">' + selection.toString() + '</span>')
 			}
 		}else{
-			this.notesCrudService.insertNoteAtPath(this.notesInteractionService.focusedComponentPath, {
+			this.notesService.notes.insertNoteAtPath(this.notesService.interaction.focusedComponentPath, {
 				...{
 					type: component[2],
-					value: '',
+					value: component[0] != 'Page' ? '' : this.notesService.createNewPage(),
 					content: component[2] == 'toggle' ? [		
 						{
 							type: 'text',

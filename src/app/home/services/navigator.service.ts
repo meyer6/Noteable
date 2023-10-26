@@ -1,7 +1,6 @@
 import { NavigationEnd, Router } from '@angular/router';
 import { FlashcardsService } from '../../flashcards/services/flashcards.service';
 import { Injectable, Injector } from '@angular/core';
-import { NotesService } from '../../notes/services/notes.service';
 import { noteInstance } from '../../notes/interfaces/noteTemplate';
 
 @Injectable({
@@ -15,12 +14,18 @@ export class NavigatorService {
 			if(val instanceof NavigationEnd){
 				this.pageContent = val.url.split('/')[1]
 
-				if(this.pageContent == 'Notes'){
-					this.injector.get(NotesService).startUp()
-				}
+				// if(this.pageContent == 'Notes'){
+				// 	this.injector.get(NotesService).startUp()
+				// }
 			}
 		})
-		this.moveToNotes('-Nd5uHU-H97hrfUZJw28')
+		// this.moveToNotes('-NhWhrmRgcVwNO5uq-wm')
+	}
+
+	moveToUrl(url: string){
+		this.router.navigate([`/refresh`], { skipLocationChange: true }).then(() => {
+			this.router.navigate([url])
+		})	
 	}
 
     moveToNotes(notesId: string){
@@ -29,7 +34,12 @@ export class NavigatorService {
 		})
 	}
 	moveToChildNotes(notesId: string){
-		const url = this.router.url
+		let url = this.router.url
+
+		let splitUrl = url.split('/')
+		splitUrl[1] = 'Notes'
+		url = splitUrl.join('/')
+
 		this.router.navigate([`/refresh`], { skipLocationChange: true }).then(() => {
 			this.router.navigate([`${url}/${notesId}`])
 		})
@@ -37,7 +47,7 @@ export class NavigatorService {
 
 	moveToFlashcards(flashcards: noteInstance[]){
 		this.injector.get(FlashcardsService).setFlashcards(flashcards)
-		this.injector.get(FlashcardsService).setNotesUrl(this.router.url.replace('/Notes/', ''))
+		this.injector.get(FlashcardsService).setLastUrl(this.router.url)
 		this.router.navigate([`/refresh`], { skipLocationChange: true }).then(() => {
 			this.router.navigate(['Flashcards'])
 		})
