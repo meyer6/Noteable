@@ -3,3 +3,30 @@
         Settings
     </div>
 </div>
+
+<div class="options-container">
+    <div class="photo-container">
+        <img 
+            class="profile-image"
+            [src]="settingsService.user.photoURL"
+            referrerpolicy="no-referrer"
+        >
+    </div>
+    <div class="inputs-container">
+        <div class="input-header">Email</div>
+        <input class="input" [value]="settingsService.user.email" readonly>
+
+        <div class="input-header">Profile URL</div>
+        <form class="input-container" (submit)="changeProfilePicture(photoUrl.value)">
+            <input class="input" #photoUrl> 
+            <button 
+                class="change-button" 
+                [style.height.px]="photoUrl.offsetHeight"
+                type="submit"
+                (click)="settingsService.deleteAccount()"
+            >Change</button>
+        </form>
+
+        <div class="delete-account">Delete Account</div>
+    </div>
+</div>

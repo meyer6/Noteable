@@ -7,10 +7,14 @@ import { NotesService } from '../../services/notes.service';
     styleUrls: ['./options-bar.component.css']
 })
 export class OptionsBarComponent {
+	// Determines whether the top bar is pinned to the top or note
     pinned: boolean = false;
-    option: 'Insert' | 'Styling' = 'Insert';
-    optionsOpen: boolean= false;
 
+	// Determines what mode the options bar is on
+    option: 'Insert' | 'Styling' = 'Insert';
+    optionsOpen: boolean = false;
+
+	// Defines all the components that can be added, as well as any additional data
 	insertOptions: any[][] = [
 		["Heading 1", "https://www.notion.so/images/blocks/header.57a7576a.png", "subHeading", {subHeadingType: 1}],
 		["Heading 2", "https://www.notion.so/images/blocks/subheader.9aab4769.png", "subHeading", {subHeadingType: 2}],
@@ -29,6 +33,7 @@ export class OptionsBarComponent {
 		["Divider", "https://www.notion.so/images/blocks/divider.210d0faf.png", "divider"],
 	];
 
+	// Defines all the styling options available
 	stylingOptions: string[][] = [
 		["B", "font-weight: 600;", "bold"], 
 		["i", "font-style: italic", "italic"], 
@@ -36,6 +41,7 @@ export class OptionsBarComponent {
 		["S", "text-decoration: line-through", "strikeThrough"]
 	];
 
+	// Defines all the styling colours available
 	stylingColours: string[][] = [
 		["Default", "#37352F", "rgba(0,0,0,0)"],
 		["Grey", "#787774", "#F1F1EF"],
@@ -52,16 +58,20 @@ export class OptionsBarComponent {
 	constructor(private notesService: NotesService){}
 
 	styleText(style: string, value: string = ''){
+		// Applies the styles
 		document.execCommand(style, false, value)
 	}
 
 	insertComponent(component: any[]){
 		if(component[0] == 'Cloze'){
+			// If the user is selecting something
 			const selection = window.getSelection()
 			if(selection){
+				// Surrounds it for the class of a cloze
 				document.execCommand('insertHTML', false, '<span class="cloze">' + selection.toString() + '</span>')
 			}
 		}else{
+			// Adds the component to the notes after the note the user is currently on
 			this.notesService.notes.insertNoteAtPath(this.notesService.interaction.focusedComponentPath, {
 				...{
 					type: component[2],

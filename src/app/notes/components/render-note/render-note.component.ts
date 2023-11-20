@@ -11,6 +11,7 @@ import { FlashcardDataService } from '../../services/flashcard-data.service';
     styleUrls: ['./render-note.component.css']
 })
 export class RenderNoteComponent {
+	// Takes the note and it's path as inputs
 	@Input() note: noteInstance;
 	@Input() notePath: number[];
 
@@ -18,11 +19,13 @@ export class RenderNoteComponent {
 
 	confidenceColour?: string;
 
+	// Stores the indent level and number list value for bullet points and ordered lists
 	indentLevel?: number;
 	numberedListValue?: string;
 
 	pageTitle?: string = 'Loading...';
 
+	// Initalises the relevant services
     constructor(
 		public notesService: NotesService,
 		public navigatorService: NavigatorService,
@@ -33,6 +36,7 @@ export class RenderNoteComponent {
 	ngOnInit(){
 		this.noteValue = this.note.value
 
+		// Performs necessary operations for the different note types
 		if(this.note.type == 'numberedPoint'){
 			this.getNumberedListValue()
 		}else if(this.note.type == 'bulletPoint'){
@@ -46,8 +50,10 @@ export class RenderNoteComponent {
 		}
 
 		if(this.note.confidenceLevel != undefined){
+			// Retrieves confidence level of flashcard
 			const confidence = this.flashcardDataService.getFinalConfidence(this.note)
 			
+			// Calculates colour to represent the flashcard confidence level
 			const diff = Math.min(196, Math.floor(confidence / 4.22 * 196))
 			let r = 116
 			let g = 214
@@ -118,13 +124,16 @@ export class RenderNoteComponent {
 	}
 
 	delete(){
+		// Deletes the note
 		this.notesService.notes.deleteNoteAtPath(this.notePath)
 	}
 
 	getNumberedListValue(){
+		// Gets index and indent level
 		const index = this.notesService.notes.getListNumber(this.notePath, 'numberedPoint')
 		const indentLevel = this.notesService.notes.getListIndent(this.notePath, 'numberedPoint')
 
+		// Calculates the list value
 		if(indentLevel == 0){
 			this.numberedListValue = this.randomNoteFunctions.convertNumToChar(index);
 		}else if (indentLevel == 1){
@@ -139,6 +148,7 @@ export class RenderNoteComponent {
 
 		const resize = (event: MouseEvent) => {
 			if(this.note.width != undefined){
+				// Changes the width of the image
 				this.note.width = Math.max(100, this.note.width - lastX + event.clientX)
 				lastX = event.clientX
 				event.preventDefault()
@@ -147,6 +157,7 @@ export class RenderNoteComponent {
 
 		document.addEventListener('mousemove', resize)
         document.addEventListener('mouseup', () => {
+			// Removes the listener on mouse up
             document.removeEventListener('mousemove', resize)
         }, {once: true})
 	}

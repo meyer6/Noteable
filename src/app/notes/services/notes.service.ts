@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { Notes } from '../interfaces/notes';
 import { Interaction } from '../interfaces/interaction';
 import { Sharing } from '../interfaces/sharing';
-import { ListenEvent } from '@angular/fire/compat/database';
 import { Unsubscribe } from 'firebase/app-check';
 
 @Injectable()
@@ -222,6 +221,7 @@ export class NotesService {
 //         }
     ];
 
+    // Initialises the classes to manipulate the notes
     notes: Notes;
     interaction: Interaction;
     sharing: Sharing;
@@ -229,6 +229,7 @@ export class NotesService {
     notesIdPath: string[] = ['']
     notesId: string = ''
 
+    // Unsubscribe listener
     getNotesUnsubscribe: Unsubscribe | undefined = undefined;
 
     constructor(private router: Router, private navigatorService: NavigatorService) {
@@ -243,17 +244,23 @@ export class NotesService {
     }
 
     setup(notes: noteInstance[] | undefined, editingStatus?: boolean){
+        // Creates new instances of the classes
         this.notes = new Notes([])
         this.interaction = new Interaction(this.notes, editingStatus)
 
+        // If notes need to be retrieved from the database
         if (notes == undefined){
+            // Gets the note id from the url
             this.notesIdPath = this.router.url.replace('/Notes/', '').split('/');
             this.notesId = this.notesIdPath[this.notesIdPath.length - 1]
             
             this.sharing = new Sharing()
 
             this.getNotes()
+            // this.notes.setNotes(this.notes2)
             this.updateNotes() 
+
+        // If the notes have been passed directly to the component
         }else{
             this.notes.setNotes(notes)
         }
@@ -268,30 +275,42 @@ export class NotesService {
 
         const userId = this.getUserId()
 
+        // Function to retrieve the notes
         const retrieveNotes = (permissionLevel: string) => {
+
+            // Unsubscribes from any current note getting listeners
+            // Prevents memory leaks or unwanted behaviour
             if(this.getNotesUnsubscribe != undefined){
                 this.getNotesUnsubscribe()
             }
 
+            // Sets the permission level in the interaction class (prevents interaction if not allowed)
             if(permissionLevel == "Editor" || permissionLevel == "Owner") this.interaction.setEditingStatus(true)
             else this.interaction.setEditingStatus(false)
 
+            // If the user has access, then the notes are retrieved from firebase
             if(permissionLevel != 'noAccess'){
                 this.getNotesUnsubscribe = onValue(ref(this.db, `notes/${this.notesId}`), (notes) => {
-                    if(notes.val() != this.notes.value){
-                        this.notes.setNotes(notes.val());
-                    }
+                    this.notes.setNotes(notes.val());
                 })
+
+            // If the user does not have access they see a message instead of the notes
             }else{
                 this.notes.setNotes([{type: 'title', value: 'You do not have access to this file', content: []}])
             }
         }
+
+        // Passes the function as a callback to the permission level method
         this.sharing.getPermissionLevel(this.notesId, userId, retrieveNotes)
 
-        // this.sharing.getPermissionLevel(this.notesId, userId).then((permissionLevel) => {
+        // this.sharing.getPermissionLevelSnapshot(this.notesId, userId).then((permissionLevel) => {
+        //     // Gets the notes
         //     onValue(ref(this.db, `notes/${this.notesId}`), (notes) => {
+        //         // If the user has access then render them
         //         if(permissionLevel != 'noAccess'){
         //             this.notes.setNotes(notes.val());
+
+        //         // Otherwise do not
         //         }else{
         //             this.notes.setNotes([{type: 'title', value: 'You do not have access to this file', content: []}])
         //         }
@@ -300,17 +319,21 @@ export class NotesService {
 	}
 
     updateNotes(){
-        setInterval(() => {
-            let updates: {[key: string]: noteInstance[]} = {}
-                if(this.notes.value.length != 0){
-                    updates[`notes/${this.notesId}/`] = this.notes.value
-                }
-            update(ref(this.db), updates)
-        }, 2000);            
+    //     // Repeats every 2 seconds
+    //     setInterval(() => {
+
+    //         // Updates the notes
+    //         let updates: {[key: string]: noteInstance[]} = {}
+    //             if(this.notes.value.length != 0){
+    //                 updates[`notes/${this.notesId}/`] = this.notes.value
+    //             }
+    //         update(ref(this.db), updates)
+    //     }, 2000);            
     }
 
     async getTitleFromPageId(pageId: string){
         return new Promise<string>((resolve) => {
+            //  Retrieves the notes and then extracts the title from it
             onValue(ref(this.db, `notes/${pageId}`), (notes) => {
                 if (notes.exists()) {
                     resolve(notes.val()[0].value)
@@ -321,15 +344,20 @@ export class NotesService {
     }
 
     createNewPage(){
+        // Gets a new key for a note
         const noteId = push(child(ref(this.db), 'notes')).key
         const userId = this.getUserId()
 
+        // Updates the notes, and the many to many intermediatary sections
         const updates: { [key: string]: any } = {}
         updates[`notes/${noteId}`] = [{type: 'title', value: 'Untitled'}, {type: 'text', value: ''}]
         updates[`users-notes/${userId}/${noteId}`] = "Owner"
         updates[`notes-users/${noteId}/${userId}`] = true
 
+        // Performs the update
         update(ref(this.db), updates).then(() => {
+
+            // Moves to the new page
             if(noteId != null) this.navigatorService.moveToChildNotes(noteId)
         })
 

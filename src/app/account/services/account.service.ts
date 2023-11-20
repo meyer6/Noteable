@@ -9,10 +9,14 @@ import { UserDetails } from '../interfaces/userInterfaces';
     providedIn: 'root',
 })
 export class AccountService {
+    // Contains error message for when input is incorrect
     errorMessage: string = '';
+
+    // Gets the database from firebase
     db: Database = getDatabase()
 
-    constructor(public router: Router) {    }
+    // Initialises the router module
+    constructor(public router: Router) { }
 
     // Sign in with email/password
     signIn(email: string, password: string) {
@@ -89,13 +93,17 @@ export class AccountService {
 
     saveData(user: UserDetails){
         if (user){
+            // Saves the user's data to local storage for future use
             localStorage.setItem('user', JSON.stringify(user));
-            this.router.navigate(['home']);
+
+            // Redirects the user to the home page
+            this.router.navigate(['Dashboard']);
         }
     }
 
-    signOut() {
+    signOut(){
         return auth.signOut().then(() => {
+            // Removes the user's details and redirects them to the login page
             localStorage.removeItem('user');
             this.router.navigate(['']);
         });

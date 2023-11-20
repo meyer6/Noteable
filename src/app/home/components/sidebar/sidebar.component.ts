@@ -3,6 +3,7 @@ import { NavigatorService } from './../../services/navigator.service';
 import { Component } from '@angular/core';
 import { DashboardService } from '../../services/dashboard.service';
 import { UserDetails } from 'src/app/account/interfaces/userInterfaces';
+import { auth } from 'src/environments/environment';
 
 @Component({
     selector: 'app-sidebar',
@@ -15,6 +16,7 @@ export class SidebarComponent {
 
     userInfo: UserDetails;
 
+    // Determines if the toggles for my and shared notes are open or not
     open1: boolean = true;
 	open2: boolean = true;
 
@@ -36,20 +38,24 @@ export class SidebarComponent {
     }
 
     resize(){
+        // Starts dragging
         this.dragging = true
         
+        // Sets the width to the mouse's x position
         const moveFunction =  (event: MouseEvent) => {
             this.width = event.clientX
         } 
         document.addEventListener('mousemove', moveFunction)
 
         document.addEventListener('mouseup', () => {
+            // Stops dragging
             this.dragging = false
             document.removeEventListener('mousemove', moveFunction)
         }, {once: true})   
     }
 
     getUserInfo(){
+        // Retrieves the user information
         this.userInfo = JSON.parse(localStorage.getItem('user')!)
     }
 }

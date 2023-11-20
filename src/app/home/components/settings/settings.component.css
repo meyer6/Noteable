@@ -15,3 +15,90 @@
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 2px 4px;
 }
+
+.options-container {
+    display: flex;
+    margin: 0 100px 0 100px;
+    align-items: center;
+}
+
+.photo-container{
+    width: min(300px, 30%);
+    margin-right: 20px;
+
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 2px 4px;
+
+    object-fit: cover;
+    overflow: hidden;
+}
+
+
+.inputs-container {
+    flex: 1;
+}
+
+.input-header {
+    font-weight: 600;
+}
+
+.input-container {
+    display: flex;
+}
+
+.input {
+    width: 100%;
+
+    border-radius: 4px;
+    margin-bottom: 10px;
+    border: 1px #E0E0DE solid;
+    outline: none;
+
+    padding: 7px;
+    box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px inset;
+    background: rgba(242, 241, 238, 0.6);
+}
+
+.change-button {
+    border-radius: 5px;
+    border: 0;
+    margin-left: 5px;
+
+    color: white;
+    background: #b5d0ec;
+
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.change-button:hover {
+    background: #4692de;
+}
+
+.delete-account {
+    width: fit-content;
+    margin-top: 5px;
+    
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: 700;
+    color: white;
+    font-size: 17px;
+
+    text-align: center;
+    background: #f39696;
+
+    user-select: none;
+    cursor: pointer;
+}
+.delete-account:hover {
+    background: red;
+    animation: shake 0.07s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes shake {
+    0% { transform: rotate(0deg) translate(0px, 1px); }
+    33% { transform: rotate(-1deg) translate(-1px, 0px); }
+    66% { transform: rotate(0deg) translate(1px, 1px)}
+    100% { transform: rotate(1deg) translate(-1px, 1px); }
+}

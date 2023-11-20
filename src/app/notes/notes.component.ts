@@ -15,6 +15,7 @@ export class NotesComponent {
     constructor(public notesService: NotesService){ }
 
     ngOnInit(){
+        // Sets up the note service
         this.notesService.setup(this.notesSetup.notes, this.notesSetup.editing)       
     }
 
@@ -25,7 +26,6 @@ export class NotesComponent {
 
 
 // Dashboard
-// Sidebar stuff
 // Settings
 // Sharing
 

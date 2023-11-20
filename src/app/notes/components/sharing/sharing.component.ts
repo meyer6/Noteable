@@ -7,8 +7,10 @@ import { NotesService } from '../../services/notes.service';
     styleUrls: ['./sharing.component.css']
 })
 export class SharingComponent {
+    // Determines whether the sharing tab is open or not
     sharingOpen: boolean = false;
 
+    // Stores the different permission levels
     permissions: string[] = ['Viewer', 'Editor', 'Owner']
 
     usersData: any[];
@@ -20,6 +22,7 @@ export class SharingComponent {
     }
 
     getUsers(){
+        // Retrieves the user's data
         this.notesService.sharing.getSharedPeople(this.notesService.notesId, (usersData: any) => {
             this.usersData = usersData
         })
@@ -28,18 +31,21 @@ export class SharingComponent {
     checkValidity(oldIndex: number, newIndex: number){
         const myIndex = this.permissions.indexOf(this.notesService.sharing.permissionLevel)
 
-        console.log(myIndex, oldIndex, newIndex)
+        // Determines whether the change in permission level is allowed 
+        // based on the permission levels of the respective users
         if(myIndex > oldIndex && myIndex >= newIndex && oldIndex != 2 && newIndex != 2){ 
             return true
         }
         return false
     }
 
+    // Changes the permission level
     changePermissionLevel(userId: string, newPermissionLevel: string){
         this.notesService.sharing.changePermissionLevel(this.notesService.notesId, userId, newPermissionLevel)
         this.getUsers()
     }
 
+    // Increases a users access level
     editUserRight(userIndex: number){
         const newIndex = (this.permissions.indexOf(this.usersData[userIndex].permission) + 1) % 3
         
@@ -47,6 +53,7 @@ export class SharingComponent {
             this.changePermissionLevel(this.usersData[userIndex].userId, this.permissions[newIndex])
         }
     }
+    // Decreases a users access level
     editUserLeft(userIndex: number){
         const newIndex = (this.permissions.indexOf(this.usersData[userIndex].permission) + 2) % 3
         
@@ -55,12 +62,14 @@ export class SharingComponent {
         }    
     }
 
+    // Removes a user from the notes
     removeUser(userIndex: number){        
         if(this.checkValidity(this.permissions.indexOf(this.usersData[userIndex].permission), -1)){
             this.changePermissionLevel(this.usersData[userIndex].userId, 'noAccess')
         }
     }
     
+    // Adds a user on the notes
     addUser(email: string){
         this.notesService.sharing.getUserIdFromEmail(email).then((userId) => {
             if(typeof userId === 'string'){

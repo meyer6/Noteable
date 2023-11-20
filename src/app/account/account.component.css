@@ -1,6 +1,9 @@
 .background {
-    background: rgb(174,127,221);
-    background: radial-gradient(circle, rgba(174,127,221,1) 21%, rgba(76,98,217,1) 100%);
+    /* background: rgb(174,127,221);
+    background: radial-gradient(circle, rgba(174,127,221,1) 21%, rgba(76,98,217,1) 100%); */
+    background: rgb(84,125,255);
+    background: radial-gradient(circle, rgba(84,125,255,1) 43%, rgba(79,153,255,0.8073354341736695) 100%);
+       
     width: 100vw;
     height: 100vh;
 }
@@ -20,7 +23,7 @@
 
     border-radius: 10px;
     border-width: 3px;
-    border-color: #3F51B5;
+    border-color: #334de2;
     text-align: center;
 }
 
@@ -37,6 +40,7 @@
     width: 70%;
     height: 40px;
     font-size: 20px;
+    background: #334de2;
 }
 
 .separator {

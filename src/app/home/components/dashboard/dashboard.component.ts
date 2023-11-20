@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 })
 export class DashboardComponent {
 
+	// Contains notes that contain the pages that the user has access to
 	myNotes: noteInstance[] = [{type: 'title', value: 'My Notes', content: []}];
 	sharedNotes: noteInstance[] = [{type: 'title', value: 'Shared Notes', content: []}]
 
@@ -16,6 +17,7 @@ export class DashboardComponent {
 
 	constructor(private dashboardService: DashboardService){ }
 
+	// Retrieves the pages and saves them to the arrays
 	ngOnInit(){
 		this.dashboardService.getPages(this.myNotes, this.sharedNotes)
 	}

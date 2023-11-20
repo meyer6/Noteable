@@ -13,8 +13,12 @@ export class AccountGuard implements CanActivate {
     ){ }
 
     canActivate(){		
+        // Retrieves user information
 		let user = JSON.parse(localStorage.getItem('user')!);
-		if(user == null) {
+		
+        // If it is undefined, i.e the user has not logged in
+        // It redirects them to the account screen
+        if(user == null) {
 			this.router.navigate([''])
 		}
         return true;

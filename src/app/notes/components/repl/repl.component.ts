@@ -19,11 +19,15 @@ import { lintKeymap } from "@codemirror/lint"
 })
 export class ReplComponent {
 	@Input() note: noteInstance;
+
+	// Determines whether or note the output should be shown
 	showOutput: boolean = false;
 
+	// Generates a unique id based on the date. Used for HTML id's
 	uid: string = Date.now().toString(36) + Math.random().toString(36).substr(2);
 
 	ngAfterViewInit(){
+		// Defines a theme
 		const myTheme = EditorView.theme({
 			"&": {
 				border: "none"
@@ -34,6 +38,8 @@ export class ReplComponent {
 		});
 
 		const targetElement = document.querySelector('#editor-' + this.uid)!
+
+		// Initalises all the features
 		let editor = new EditorView({
 			doc: this.note.value,
 			extensions: [
@@ -77,6 +83,7 @@ export class ReplComponent {
 			parent: targetElement,
 		})
 
+		// If there is an output, render it
 		if(this.note.lastOutput != undefined){
 			const output = document.getElementById('out-' + this.uid)
 			if (output != null){
@@ -89,6 +96,7 @@ export class ReplComponent {
 	outputShow(change: boolean){
 		this.showOutput = change
 		if(change){
+			// If the user wants an output, then run the code
 			const output = document.getElementById("out-" + this.uid)
 			if(output != null){
 				output.innerHTML = 'Loading...'
@@ -103,6 +111,10 @@ export class ReplComponent {
 	}
 
 	async importModules(){
+		// Creates a div
+		// Sets it's html to run the following python code
+		// This code imports libraries, and once done updates a seperate 
+		// div to indicate to the programme that it is done
 		const importsDiv = document.createElement("div")
 		importsDiv.innerHTML =`<py-script>
 async def main():
@@ -110,14 +122,22 @@ async def main():
 	parent.innerHTML = "Loading"
 
 	await micropip.install(${JSON.stringify(this.note.value.split('\n').map((code: string) => {
+		// Checks every line in the code, if it has inport then it moves on
 		if(code.replace('import', '') != code){
+			// Splits the import up into its individual words
 			const splitCode = code.split(' ') 
+
+			// Determines the form of the import 
 			if(splitCode.indexOf('from') != -1){
+				// "from x import y"
 				return `${splitCode[splitCode.indexOf('from') + 1].split('.')[0]}`
 			}
+
+			// "#import x"
 			return `${splitCode[splitCode.indexOf('import') + 1].split('.')[0]}`
 		}
 		return ''
+	// Removes any empty imports
 	}).filter((value: string) => {return value != ''}))})
 
 	parent.innerHTML = "Done"
@@ -126,15 +146,18 @@ asyncio.create_task(main())
 		
 </py-script>`
 
+		// Inserts the component created above into the HTML
 		const imports = importsDiv.firstElementChild
 		const importsParent = document.getElementById("imports-" + this.uid)
 		if(importsParent != null && imports != null){
 			importsParent.appendChild(imports);
+			// Runs the code
 			(imports as any).evaluate();
 		}
 
 		const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 		let first = true
+		// Checks every 0.5s to see if the libraries have imported
 		while (first ||(document.getElementById("imports-state-" + this.uid) as any).innerHTML == "Loading"){
 			first = false
 			await delay(500)
@@ -142,15 +165,19 @@ asyncio.create_task(main())
 	}
 
 	runCode(){
+		// Create HTML element with the code in it
 		const pyScriptDiv = document.createElement("div");
 		pyScriptDiv.innerHTML = `<py-script output="out-${this.uid}">\n${this.note.value}\n</py-script>`;
 		const pyScript = pyScriptDiv.firstElementChild;
 
+		// Insert it into the document
 		const pyScriptParent = document.getElementById("out-" + this.uid)
 		if(pyScriptParent != null && pyScript != null){
 			pyScriptParent.innerHTML = ""
 
 			pyScriptParent.appendChild(pyScript);
+			
+			// Run the code and add the output to the data of the note
 			(pyScript as any).evaluate().then(() => {
 				this.note = {...this.note, ...{extraData: {lastOutput: pyScriptParent.innerHTML}}}
 			})

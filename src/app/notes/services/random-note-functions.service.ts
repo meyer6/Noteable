@@ -8,8 +8,13 @@ export class RandomNoteFunctionsService {
     constructor() { }
 
 	addMathsEquations(){
+		// Retrieves the element with the classname mathquill
 		const mathsEquations = document.getElementsByClassName("mathquill")
+
+		// Loops through them
 		for(let i = 0; i < mathsEquations.length; i++){
+
+			// Converts them into mathquill maths equations
 			const MQ = (window as any).MathQuill.getInterface(2);
 			MQ.MathField(mathsEquations[i],{
 				spaceBehavesLikeTab: true,

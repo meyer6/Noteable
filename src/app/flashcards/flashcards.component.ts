@@ -8,10 +8,14 @@ import { FlashcardsService } from './services/flashcards.service';
     styleUrls: ['./flashcards.component.css']
 })
 export class FlashcardsComponent {
+	// Initalises flashcards
 	flashcards: noteInstance[]
 
+	// 
 	showAnswers: boolean[] = new Array(this.flashcardsService.flashcards.length).fill(false);
 	showConfidenceLevel: boolean[] = new Array(this.flashcardsService.flashcards.length).fill(true);
+	
+	// Determines the current flashcard number
 	currentFlashcardIndex: number = 0;
 
 	emptyTitle: noteInstance = {
@@ -23,6 +27,7 @@ export class FlashcardsComponent {
     constructor(public flashcardsService: FlashcardsService){ }
 
 	ngOnInit(){
+		// Sets up key presses to interact with the flashcards
 		document.addEventListener('keyup', (event: KeyboardEvent) => {
 			if(event.key == 'ArrowRight'){
 				this.moveRight()
@@ -35,24 +40,32 @@ export class FlashcardsComponent {
 	}
 
 	moveRight(){
+		// Moves to the right
 		this.currentFlashcardIndex = Math.min(this.flashcardsService.flashcards.length, this.currentFlashcardIndex + 1)
 	}
 	moveLeft(){
+		// Moves to the left
 		this.currentFlashcardIndex = Math.max(0, this.currentFlashcardIndex - 1)
 	}
 
     recordConfidenceLevel(confidenceLevel: 0 | 1 | 2 | 3){
         let flashcard = this.flashcardsService.flashcards[this.currentFlashcardIndex]
-        if(flashcard.confidenceLevel != undefined){
+        
+		// Appends the confidence level
+		if(flashcard.confidenceLevel != undefined){
             flashcard.confidenceLevel.push(confidenceLevel) 
         }else{
             flashcard.confidenceLevel = [confidenceLevel]
         }
         
+		// Sets the date of last review to now
         flashcard.dateOfLastReview = Date.now()
 
+		// Prevents repeated confidence level picks
         this.showConfidenceLevel[this.currentFlashcardIndex] = false
         this.showAnswers[this.currentFlashcardIndex] = true
+
+		// Moves to the next flashcard
         this.currentFlashcardIndex++
     } 
 }

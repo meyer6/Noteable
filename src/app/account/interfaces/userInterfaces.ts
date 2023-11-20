@@ -1,5 +1,6 @@
 import { FormControl, Validators } from '@angular/forms';
 
+// Used for the user login form
 export class UserLogin {
     email: FormControl;
     password: FormControl;
@@ -9,6 +10,7 @@ export class UserLogin {
     }
 }
 
+// Used as a format to store relevant user details 
 export interface UserDetails {
     uid: string;
     email: string | null;

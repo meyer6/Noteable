@@ -9,17 +9,20 @@ export class FlashcardDataService {
     constructor() { }
 
 	getFinalConfidence(note: noteInstance){
+		// Adds the confidence and time weights
 		const confidenceNum = this.getConfidenceLevel(note)
 		const timeWeight = this.getTimeWeight(note)
 		return confidenceNum + timeWeight
 	}
 
 	getConfidenceLevel(note: noteInstance){
+		// Scales more recent flashcards more heavily
         const weights = [0.1, 0.2, 0.7]
 
 		let confidenceNum = 3
 		const confidenceLevel = note.confidenceLevel
 		if(confidenceLevel != undefined){
+			// Finds weighted average across last 3 tries of the flashcard
 			const weightedConfidenceLevel = [3, 3, 3].concat(confidenceLevel).slice(confidenceLevel.length)
 			confidenceNum  = 0
 			for(let i = 0; i < weightedConfidenceLevel.length; i++){
@@ -32,6 +35,7 @@ export class FlashcardDataService {
 	getTimeWeight(note: noteInstance){
 		let timeWeight = 1.22
 		if(note.dateOfLastReview != undefined){
+			// Calculates the time weighting, more time --> less confident
 			const time = (note.dateOfLastReview - Date.now()) / (1000 * 3600 * 24)
 			timeWeight = 1.3 * Math.log(time + 2) - 1.3
 		}

@@ -31,6 +31,7 @@ export class FlashcardsOptionsComponent {
     }
 
     flashcardFullReview(){
+        // For every toggle and cloze 
         const flashcards = this.notesService.notes.value.filter((note: noteInstance) => {
             return note.type == 'toggle' || note.value.includes('cloze')
         })
@@ -38,11 +39,13 @@ export class FlashcardsOptionsComponent {
     }
 
     flashcardmartReview(threshold: number){
+        // For every toggle and cloze 
         let flashcards = this.notesService.notes.value.filter((note: noteInstance) => {
             if(note.type != 'toggle' && !note.value.includes('cloze')){
                 return false
             }
 
+            // If the confidence level is worse than the threshold it is put in the deck
             return this.flashcardDataService.getFinalConfidence(note) > threshold
         })
         this.navigatorService.moveToFlashcards(flashcards)

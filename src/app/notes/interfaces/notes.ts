@@ -1,6 +1,7 @@
 import { noteInstance } from "./noteTemplate";
 
 export class Notes {
+    // Stores the notes
     value: noteInstance[]
 
     constructor(notes: noteInstance[]){
@@ -14,6 +15,7 @@ export class Notes {
         return this.value
     }
 
+    // Returns the note at a given location
     getNoteAtPath(path: number[]){
         let currentNote = this.value[path[0]]
         for(let i = 1; i < path.length; i++){
@@ -21,6 +23,8 @@ export class Notes {
         }
         return currentNote
     }
+
+    // Deletes the note at a given location
     deleteNoteAtPath(path: number[]){
         let currentNotes = this.value
         for(let i = 0; i < path.length - 1; i++){
@@ -28,6 +32,8 @@ export class Notes {
         }
         currentNotes.splice(path[path.length - 1], 1)
     }
+
+    // Inserts a note at a given location
     insertNoteAtPath(path: number[], note: noteInstance){
         let currentNotes = this.value
         for(let i = 0; i < path.length - 1; i++){
@@ -35,13 +41,18 @@ export class Notes {
         }
         currentNotes.splice(path[path.length - 1] + 1, 0, note)
     } 
+
+    // Moves a note from one location to another
 	moveNote(oldPath: number[], newPath: number[]){
         if(newPath[0] != -2 && newPath.slice(0, oldPath.length).toString() != oldPath.toString()){
             const note = this.getNoteAtPath(oldPath)
             this.deleteNoteAtPath(oldPath)
 
+            // Gets new location
             let currentNote = this.value
             for(let i = 0; i < newPath.length - 1; i++){
+
+                // If the deleted note is before the new one, we must subtract 1 from the path
                 if(newPath[i] > oldPath[i] && i == oldPath.length - 1){
                     currentNote = currentNote[newPath[i] - 1].content
                 }else{
@@ -50,6 +61,7 @@ export class Notes {
             }
 
             const i = newPath.length - 1
+            // If the deleted note is before the new one, we must subtract 1 from the path
             if(newPath[i] > oldPath[i] && i == oldPath.length - 1){
                 currentNote.splice(newPath[i], 0, note)
             }else{
@@ -58,8 +70,10 @@ export class Notes {
         }
     }
 
+    // Calculates the list indent level of a list
 	getListIndent(path: number[], listType: string){
         let indentLevel = 2;
+        // Goes back until it is no longer in the list
         for(let i = path.length - 2; i > -1; i--){
             if(this.getNoteAtPath(path.slice(0, i + 1)).type == listType){
                 indentLevel++
@@ -79,13 +93,16 @@ export class Notes {
 		// } while(index >= 0 && current.type == listType)
 		return indentLevel % 3
 	}
+
+    // Calculates the list number of a list item
 	getListNumber(path: number[], listType: string){
+        // Gets all note at the same level
 		let current = this.value
 		for(let i = 0; i < path.length - 1; i++){
 			current = current[path[i]].content
 		}
 
-        
+        // Goes back to see how many list items are before it
 		let index = path[path.length - 1]
 		while(index != 0 && current[index - 1].type == listType){
 			index--
