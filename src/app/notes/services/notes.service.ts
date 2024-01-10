@@ -271,37 +271,37 @@ export class NotesService {
     }
 
 	getNotes(){
-        // this.notes.setNotes(this.notes2)
+        this.notes.setNotes(this.notes2)
 
-        const userId = this.getUserId()
+        // const userId = this.getUserId()
 
-        // Function to retrieve the notes
-        const retrieveNotes = (permissionLevel: string) => {
+        // // Function to retrieve the notes
+        // const retrieveNotes = (permissionLevel: string) => {
 
-            // Unsubscribes from any current note getting listeners
-            // Prevents memory leaks or unwanted behaviour
-            if(this.getNotesUnsubscribe != undefined){
-                this.getNotesUnsubscribe()
-            }
+        //     // Unsubscribes from any current note getting listeners
+        //     // Prevents memory leaks or unwanted behaviour
+        //     if(this.getNotesUnsubscribe != undefined){
+        //         this.getNotesUnsubscribe()
+        //     }
 
-            // Sets the permission level in the interaction class (prevents interaction if not allowed)
-            if(permissionLevel == "Editor" || permissionLevel == "Owner") this.interaction.setEditingStatus(true)
-            else this.interaction.setEditingStatus(false)
+        //     // Sets the permission level in the interaction class (prevents interaction if not allowed)
+        //     if(permissionLevel == "Editor" || permissionLevel == "Owner") this.interaction.setEditingStatus(true)
+        //     else this.interaction.setEditingStatus(false)
 
-            // If the user has access, then the notes are retrieved from firebase
-            if(permissionLevel != 'noAccess'){
-                this.getNotesUnsubscribe = onValue(ref(this.db, `notes/${this.notesId}`), (notes) => {
-                    this.notes.setNotes(notes.val());
-                })
+        //     // If the user has access, then the notes are retrieved from firebase
+        //     if(permissionLevel != 'noAccess'){
+        //         this.getNotesUnsubscribe = onValue(ref(this.db, `notes/${this.notesId}`), (notes) => {
+        //             this.notes.setNotes(notes.val());
+        //         })
 
-            // If the user does not have access they see a message instead of the notes
-            }else{
-                this.notes.setNotes([{type: 'title', value: 'You do not have access to this file', content: []}])
-            }
-        }
+        //     // If the user does not have access they see a message instead of the notes
+        //     }else{
+        //         this.notes.setNotes([{type: 'title', value: 'You do not have access to this file', content: []}])
+        //     }
+        // }
 
-        // Passes the function as a callback to the permission level method
-        this.sharing.getPermissionLevel(this.notesId, userId, retrieveNotes)
+        // // Passes the function as a callback to the permission level method
+        // this.sharing.getPermissionLevel(this.notesId, userId, retrieveNotes)
 
         // this.sharing.getPermissionLevelSnapshot(this.notesId, userId).then((permissionLevel) => {
         //     // Gets the notes
