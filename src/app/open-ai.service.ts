@@ -8,7 +8,7 @@ export class OpenAiService {
     constructor() { }
 
     readonly openai = new OpenAI({
-        apiKey: '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', 
+        apiKey: '__________________', 
         dangerouslyAllowBrowser: true
     });  
 
