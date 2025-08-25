@@ -12,7 +12,7 @@ Note taking service encapsulating features from Notion, Anki, Google Colab and m
 <img width="786" height="419" alt="image6" src="https://github.com/user-attachments/assets/6f31ed71-ba46-4636-bda1-68686828ccf8" />
 
 ### Python Code Block
-<img width="416" height="160" alt="image53" src="https://github.com/user-attachments/assets/6910862e-103b-4b34-b9d2-231e3d480148" />
+<img width="416" height="160" alt="image53" src="https://github.com/user-attachments/assets/6910862e-103b-4b34-b9d2-231e3d480148" /> <br />
 <img width="416" height="362" alt="image27" src="https://github.com/user-attachments/assets/2da44a6d-98f1-4af2-baa5-b966ee922228" />
 
 ### Components & Styling
